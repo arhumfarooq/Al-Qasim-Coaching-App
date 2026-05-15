@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "635856553145",
+    "project_id": "alqasim-coaching",
+    "storage_bucket": "alqasim-coaching.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635856553145:android:b04d44daf9e3ff834f8768",
+        "android_client_info": {
+          "package_name": "com.alqasim.coaching"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDq4H3N2TfhS5sgSkqlEbh2iHADHmjxixc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635856553145:android:266c8def90c8f39d4f8768",
+        "android_client_info": {
+          "package_name": "com.example.qr_code_scanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDq4H3N2TfhS5sgSkqlEbh2iHADHmjxixc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
