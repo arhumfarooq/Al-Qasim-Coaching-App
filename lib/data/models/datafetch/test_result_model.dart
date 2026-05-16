@@ -141,6 +141,7 @@ class TestResultModel {
   final int obtainedMarks;
   final String chapterName;
   final int rank;
+  final String rollNo;
 
   TestResultModel({
     required this.id,
@@ -150,7 +151,7 @@ class TestResultModel {
     required this.totalMarks,
     required this.obtainedMarks,
     this.chapterName = '',
-    this.rank = 0,
+    this.rank = 0, required this.rollNo,
   });
 
   double get percentage {
@@ -187,7 +188,7 @@ class TestResultModel {
       totalMarks: int.tryParse(data['totalMarks']?.toString() ?? '0') ?? 0,
       obtainedMarks: obtainedMarks,
       chapterName: data['chapterName']?.toString() ?? '',
-      rank: calculatedRank,
+      rank: calculatedRank, rollNo: studentKey,
     );
   }
 }

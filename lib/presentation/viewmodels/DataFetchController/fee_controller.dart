@@ -104,9 +104,77 @@ List<FeeModel> get unpaidFees {
 StudentModel? get currentStudent =>
     _studentController.student.value;
 
+// List<Map<String, dynamic>> get pendingAndUpcomingMonths {
+//   final now = DateTime.now();
+//   final currentMonth = DateTime(now.year, now.month, 1);
+
+//   final paidMonthKeys = fees
+//       .where((e) => e.status == 'paid')
+//       .map((e) => e.month)
+//       .toSet();
+
+//   final List<Map<String, dynamic>> list = [];
+
+//   // Current year January se current month tak unpaid/pending check
+//   for (int m = 1; m <= now.month; m++) {
+//     final monthKey =
+//         '${now.year}-${m.toString().padLeft(2, '0')}';
+
+//     if (!paidMonthKeys.contains(monthKey)) {
+//       list.add({
+//         'monthKey': monthKey,
+//         'status': 'Unpaid',
+//         'date': DateTime(now.year, m, 1),
+//       });
+//     }
+//   }
+
+//   // Next 2 upcoming months
+//   for (int i = 1; i <= 2; i++) {
+//     final date = DateTime(now.year, now.month + i, 1);
+
+//     final monthKey =
+//         '${date.year}-${date.month.toString().padLeft(2, '0')}';
+
+//     if (!paidMonthKeys.contains(monthKey)) {
+//       list.add({
+//         'monthKey': monthKey,
+//         'status': 'Upcoming',
+//         'date': date,
+//       });
+//     }
+//   }
+
+//   return list;
+// }
+
 List<Map<String, dynamic>> get pendingAndUpcomingMonths {
   final now = DateTime.now();
-  final currentMonth = DateTime(now.year, now.month, 1);
+
+  final student = currentStudent;
+
+  /// Student ka admission/add month
+  /// Agar tumhare StudentModel me field ka naam different hai,
+  /// to yahan replace kar dena.
+  ///
+  /// Example:
+  /// student?.createdAt
+  /// student?.admissionDate
+  /// student?.joinedAt
+
+  final studentJoiningDate = student?.createdAt ?? now;
+
+  final startMonth = DateTime(
+    studentJoiningDate.year,
+    studentJoiningDate.month,
+    1,
+  );
+
+  final currentMonth = DateTime(
+    now.year,
+    now.month,
+    1,
+  );
 
   final paidMonthKeys = fees
       .where((e) => e.status == 'paid')
@@ -115,21 +183,29 @@ List<Map<String, dynamic>> get pendingAndUpcomingMonths {
 
   final List<Map<String, dynamic>> list = [];
 
-  // Current year January se current month tak unpaid/pending check
-  for (int m = 1; m <= now.month; m++) {
+  DateTime loopMonth = startMonth;
+
+  /// Student ke join month se current month tak unpaid check
+  while (!loopMonth.isAfter(currentMonth)) {
     final monthKey =
-        '${now.year}-${m.toString().padLeft(2, '0')}';
+        '${loopMonth.year}-${loopMonth.month.toString().padLeft(2, '0')}';
 
     if (!paidMonthKeys.contains(monthKey)) {
       list.add({
         'monthKey': monthKey,
         'status': 'Unpaid',
-        'date': DateTime(now.year, m, 1),
+        'date': loopMonth,
       });
     }
+
+    loopMonth = DateTime(
+      loopMonth.year,
+      loopMonth.month + 1,
+      1,
+    );
   }
 
-  // Next 2 upcoming months
+  /// Next 2 upcoming months
   for (int i = 1; i <= 2; i++) {
     final date = DateTime(now.year, now.month + i, 1);
 
@@ -147,7 +223,6 @@ List<Map<String, dynamic>> get pendingAndUpcomingMonths {
 
   return list;
 }
-
 
 final selectedYear = DateTime.now().year.obs;
 final selectedMonth = DateTime.now().month.obs;

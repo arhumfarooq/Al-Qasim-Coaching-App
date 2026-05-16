@@ -6,10 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:qr_code_scanner/components/login_background_elements.dart';
 import 'package:qr_code_scanner/core/constants/attendance_Colors.dart';
+import 'package:qr_code_scanner/core/constants/fee_colors.dart';
 import 'package:qr_code_scanner/data/models/quick_action_item.dart';
 import 'package:qr_code_scanner/data/models/stat_item.dart';
 import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/dashboard_stats_controller.dart';
 import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/student_controller.dart';
+import 'package:qr_code_scanner/presentation/viewmodels/auth_controller.dart';
 import 'package:qr_code_scanner/presentation/views/attendance/monthly_attendance_screen.dart';
 import 'package:qr_code_scanner/presentation/views/fee/fee_home_screen.dart';
 import 'package:qr_code_scanner/presentation/views/fee/monthly_fee_screen.dart';
@@ -23,6 +25,8 @@ import 'package:qr_code_scanner/presentation/views/test_resutls/test_results_scr
 class StudentDashboard extends StatelessWidget {
   final RxString greeting = RxString('');
   final StudentController studentController = Get.put(StudentController());
+  final AuthController authController =
+    Get.find<AuthController>();
   final DashboardStatsController dashboardStatsController =
     Get.put(DashboardStatsController());
 
@@ -40,6 +44,28 @@ class StudentDashboard extends StatelessWidget {
     }
 
     return Scaffold(
+
+ floatingActionButton: FloatingActionButton.extended(
+    onPressed: () {
+      authController.logout();
+    },
+    backgroundColor: FeeColors.overdueColor,
+    icon: Icon(
+      LucideIcons.logOut,
+      color: Colors.white,
+      size: 20.sp,
+    ),
+    label: Text(
+      'Logout',
+      style: GoogleFonts.poppins(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  ).animate().scale(delay: 300.ms).fadeIn(),
+
+
+
       backgroundColor: AttendanceColors.warmWhite,
       body: Stack(
         children: [
@@ -52,6 +78,8 @@ class StudentDashboard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
+                  
                   // Header Section with Animation
                   Obx(() {
                     final student = studentController.student.value;
@@ -77,91 +105,9 @@ class StudentDashboard extends StatelessWidget {
                     );
                   }),
 
-                  // AnimatedHeaderSection(
-                  //   greeting: greeting,
-                  //   userName: 'Naveed kk',
-                  //   classInfo: 'Class 10, Al-Qasim Academy',
-                  //   getGreetingIcon: _getGreetingIcon,
-                  // ),
+             
                   SizedBox(height: 32.h),
-                  // AnimatedStatsSection(
-                  //   title: 'Your Performance',
-                  //   filterLabel: 'This Week',
-                  //   stats: [
-                  //     StatItem(
-                  //       title: 'Attendance',
-                  //       value: '94%',
-                  //       change: '+2%',
-                  //       icon: LucideIcons.calendarCheck,
-                  //       color: AttendanceColors.presentColor,
-                  //       delay: 600.ms,
-                  //     ),
-                  //     StatItem(
-                  //       title: 'Avg Test Score',
-                  //       value: '87%',
-                  //       change: '+5%',
-                  //       icon: LucideIcons.clipboardCheck,
-                  //       color: AttendanceColors.primaryOrange,
-                  //       delay: 700.ms,
-                  //     ),
-                  //     StatItem(
-                  //       title: 'Fee Status',
-                  //       value: 'Paid',
-                  //       change: 'On Time',
-                  //       icon: LucideIcons.wallet,
-                  //       color: AttendanceColors.holidayColor,
-                  //       delay: 800.ms,
-                  //     ),
-                  //     StatItem(
-                  //       title: 'Rank',
-                  //       value: '#12',
-                  //       change: '↑ 3',
-                  //       icon: LucideIcons.award,
-                  //       color: AttendanceColors.darkOrange,
-                  //       delay: 900.ms,
-                  //     ),
-                  //   ],
-                  // ),
-
-
-//                   Obx(() => AnimatedStatsSection(
-//   title: 'Your Performance',
-//   filterLabel: 'This Week',
-//   stats: [
-//     StatItem(
-//       title: 'Attendance',
-//       value: '${dashboardStatsController.thisWeekAttendance.toStringAsFixed(0)}%',
-//       change: dashboardStatsController.attendanceChange,
-//       icon: LucideIcons.calendarCheck,
-//       color: AttendanceColors.presentColor,
-//       delay: 600.ms,
-//     ),
-//     StatItem(
-//       title: 'Avg Test Score',
-//       value: '${dashboardStatsController.thisWeekAvgScore.toStringAsFixed(0)}%',
-//       change: dashboardStatsController.scoreChange,
-//       icon: LucideIcons.clipboardCheck,
-//       color: AttendanceColors.primaryOrange,
-//       delay: 700.ms,
-//     ),
-//     StatItem(
-//       title: 'Fee Status',
-//       value: dashboardStatsController.currentFeeStatus,
-//       change: dashboardStatsController.feeChangeText,
-//       icon: LucideIcons.wallet,
-//       color: AttendanceColors.holidayColor,
-//       delay: 800.ms,
-//     ),
-//     StatItem(
-//       title: 'Rank',
-//       value: dashboardStatsController.rankChangeText,
-//       change: 'This Week',
-//       icon: LucideIcons.award,
-//       color: AttendanceColors.darkOrange,
-//       delay: 900.ms,
-//     ),
-//   ],
-// )),
+            
 
 Obx(() {
   if (dashboardStatsController.isLoading.value) {
@@ -190,6 +136,7 @@ Obx(() {
         color: AttendanceColors.primaryOrange,
         delay: 700.ms,
       ),
+
       StatItem(
         title: 'Fee Status',
         value: dashboardStatsController.currentFeeStatus,
@@ -206,6 +153,14 @@ Obx(() {
         color: AttendanceColors.darkOrange,
         delay: 900.ms,
       ),
+//       StatItem(
+//   title: 'Rank',
+//   value: dashboardStatsController.rankChangeTextValue.value,
+//   change: 'This Week',
+//   icon: LucideIcons.award,
+//   color: AttendanceColors.darkOrange,
+//   delay: 900.ms,
+// ),
     ],
   );
 }),
@@ -283,119 +238,6 @@ Obx(() {
   }
 
   
-  Widget _buildTestCard(Map<String, dynamic> test, int index) {
-    return Container(
-          margin: EdgeInsets.only(bottom: 12.h),
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.03),
-                blurRadius: 8,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              // Animated Countdown Circle
-              Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SizedBox(
-                        width: 50.w,
-                        height: 50.h,
-                        child: CircularProgressIndicator(
-                          value: 0.7,
-                          strokeWidth: 3.w,
-                          backgroundColor: (test['color'] as Color).withOpacity(
-                            0.1,
-                          ),
-                          valueColor: AlwaysStoppedAnimation(
-                            test['color'] as Color,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        '1d',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w700,
-                          color: test['color'] as Color,
-                        ),
-                      ),
-                    ],
-                  )
-                  .animate(delay: (1400 + index * 150).ms)
-                  .scale(begin: Offset(0.5, 0.5), end: Offset(1, 1))
-                  .fadeIn(duration: 600.ms),
+ 
 
-              SizedBox(width: 16.w),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                          test['subject'] as String,
-                          style: GoogleFonts.poppins(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700,
-                            color: AttendanceColors.darkText,
-                          ),
-                        )
-                        .animate(delay: (1450 + index * 150).ms)
-                        .slideX(begin: -0.1, end: 0)
-                        .fadeIn(duration: 500.ms),
-
-                    SizedBox(height: 4.h),
-
-                    Text(
-                      test['topic'] as String,
-                      style: GoogleFonts.poppins(
-                        fontSize: 13.sp,
-                        color: AttendanceColors.lightText,
-                      ),
-                    ),
-
-                    SizedBox(height: 4.h),
-
-                    Row(
-                      children: [
-                        Icon(
-                          LucideIcons.clock,
-                          size: 12.sp,
-                          color: AttendanceColors.lightText,
-                        ),
-                        SizedBox(width: 4.w),
-                        Text(
-                          test['date'] as String,
-                          style: GoogleFonts.poppins(
-                            fontSize: 11.sp,
-                            color: AttendanceColors.lightText,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  LucideIcons.chevronRight,
-                  size: 20.sp,
-                  color: Colors.grey.shade400,
-                ),
-              ),
-            ],
-          ),
-        )
-        .animate(delay: (1350 + index * 150).ms)
-        .slideX(begin: 0.2, end: 0)
-        .fadeIn(duration: 500.ms);
-  }
 }

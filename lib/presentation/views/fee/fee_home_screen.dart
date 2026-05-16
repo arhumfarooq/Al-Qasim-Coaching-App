@@ -810,6 +810,97 @@ final FeesController feeController = Get.put(FeesController());
   // }
 
 
+// Widget _buildHeaderSection(BuildContext context) {
+//   return Obx(() {
+
+//     final student =
+//         feeController.currentStudent;
+
+//     return Row(
+//       mainAxisAlignment:
+//           MainAxisAlignment.spaceBetween,
+//       children: [
+
+//         Expanded(
+//           child: Column(
+//             crossAxisAlignment:
+//                 CrossAxisAlignment.start,
+//             children: [
+
+//               Text(
+//                 'Fee Status',
+//                 style: FeeTypography
+//                     .headlineLarge(context),
+//               )
+//                   .animate()
+//                   .fadeIn(delay: 100.ms),
+
+//               SizedBox(height: 6.h),
+
+//               Text(
+//                 'Track monthly fee records and payment status',
+//                 style:
+//                     FeeTypography.bodyMedium(context),
+//               ).animate().fadeIn(delay: 180.ms),
+
+//               SizedBox(height: 10.h),
+
+//               Container(
+//                 padding: EdgeInsets.symmetric(
+//                   horizontal: 12.w,
+//                   vertical: 7.h,
+//                 ),
+//                 decoration: BoxDecoration(
+//                   color:
+//                       Colors.white.withOpacity(0.85),
+//                   borderRadius:
+//                       BorderRadius.circular(50.r),
+//                   border: Border.all(
+//                     color: FeeColors.primaryOrange
+//                         .withOpacity(0.15),
+//                   ),
+//                 ),
+//                 child: Text(
+//                   'Al-Qasim Academy • Class ${student?.grade ?? '--'}th',
+//                   style:
+//                       FeeTypography.caption(context),
+//                 ),
+//               )
+//                   .animate()
+//                   .fadeIn(delay: 250.ms)
+//                   .slideX(begin: -0.08),
+//             ],
+//           ),
+//         ),
+
+//         SizedBox(width: 12.w),
+
+//         Container(
+//           padding: EdgeInsets.all(13.w),
+//           decoration: BoxDecoration(
+//             shape: BoxShape.circle,
+//             color: Colors.white,
+//             boxShadow: [
+//               BoxShadow(
+//                 color: FeeColors.primaryOrange
+//                     .withOpacity(0.12),
+//                 blurRadius: 18,
+//                 offset: const Offset(0, 8),
+//               ),
+//             ],
+//           ),
+//           child: Icon(
+//             LucideIcons.receipt,
+//             color: FeeColors.primaryOrange,
+//             size: 25.sp,
+//           ),
+//         ).animate().scale(delay: 300.ms),
+//       ],
+//     );
+//   });
+// }
+
+
 Widget _buildHeaderSection(BuildContext context) {
   return Obx(() {
 
@@ -817,9 +908,34 @@ Widget _buildHeaderSection(BuildContext context) {
         feeController.currentStudent;
 
     return Row(
-      mainAxisAlignment:
-          MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+
+        GestureDetector(
+          onTap: () => Get.back(),
+          child: Container(
+            width: 44.w,
+            height: 44.h,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Icon(
+              LucideIcons.arrowLeft,
+              color: FeeColors.darkText,
+              size: 20.sp,
+            ),
+          ),
+        ).animate().scale(delay: 100.ms),
+
+        SizedBox(width: 14.w),
 
         Expanded(
           child: Column(
@@ -872,33 +988,11 @@ Widget _buildHeaderSection(BuildContext context) {
             ],
           ),
         ),
-
-        SizedBox(width: 12.w),
-
-        Container(
-          padding: EdgeInsets.all(13.w),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: FeeColors.primaryOrange
-                    .withOpacity(0.12),
-                blurRadius: 18,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Icon(
-            LucideIcons.receipt,
-            color: FeeColors.primaryOrange,
-            size: 25.sp,
-          ),
-        ).animate().scale(delay: 300.ms),
       ],
     );
   });
 }
+
 
   // Widget _buildStatusOverviewCard(BuildContext context) {
   //   return Container(

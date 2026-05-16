@@ -148,7 +148,96 @@ class TestResultsScreen extends StatelessWidget {
   //   );
   // }
 
- Widget _buildHeaderSection(BuildContext context) {
+//  Widget _buildHeaderSection(BuildContext context) {
+//   return Obx(() {
+
+//     final now = DateTime.now();
+
+//     const months = [
+//       'January',
+//       'February',
+//       'March',
+//       'April',
+//       'May',
+//       'June',
+//       'July',
+//       'August',
+//       'September',
+//       'October',
+//       'November',
+//       'December',
+//     ];
+
+// final student =
+//     testResultController.currentStudent;
+
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+
+//             Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+
+//                 Text(
+//                   'Test Results',
+//                   style: AttendanceTypography
+//                       .headlineLarge(context),
+//                 ).animate().fadeIn(delay: 100.ms),
+
+//                 SizedBox(height: 4.h),
+
+//                 Text(
+//                   '${months[now.month - 1]} ${now.year}',
+//                   style: AttendanceTypography
+//                       .bodyMedium(context),
+//                 ).animate().fadeIn(delay: 200.ms),
+//               ],
+//             ),
+
+//             Container(
+//               width: 50.w,
+//               height: 50.h,
+//               decoration: BoxDecoration(
+//                 shape: BoxShape.circle,
+//                 color: Colors.white,
+//                 boxShadow: [
+//                   BoxShadow(
+//                     color: Colors.black.withOpacity(0.05),
+//                     blurRadius: 10,
+//                     spreadRadius: 1,
+//                   ),
+//                 ],
+//               ),
+//               child: Icon(
+//                 LucideIcons.clipboardCheck,
+//                 color: AttendanceColors.primaryOrange,
+//                 size: 24.sp,
+//               ),
+//             ).animate().scale(delay: 300.ms),
+//           ],
+//         ),
+
+//         SizedBox(height: 8.h),
+
+//         Text(
+//           'Al-Qasim Academy • Class ${student?.grade ?? '--'}',
+//           style: GoogleFonts.inter(
+//             fontSize: 12.sp,
+//             fontWeight: FontWeight.w400,
+//             color: AttendanceColors.lightText,
+//           ),
+//         ).animate().fadeIn(delay: 400.ms),
+//       ],
+//     );
+//   });
+// }
+
+Widget _buildHeaderSection(BuildContext context) {
   return Obx(() {
 
     final now = DateTime.now();
@@ -168,8 +257,8 @@ class TestResultsScreen extends StatelessWidget {
       'December',
     ];
 
-final student =
-    testResultController.currentStudent;
+    final student =
+        testResultController.currentStudent;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,52 +268,55 @@ final student =
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
 
-                Text(
-                  'Test Results',
-                  style: AttendanceTypography
-                      .headlineLarge(context),
-                ).animate().fadeIn(delay: 100.ms),
-
-                SizedBox(height: 4.h),
-
-                Text(
-                  '${months[now.month - 1]} ${now.year}',
-                  style: AttendanceTypography
-                      .bodyMedium(context),
-                ).animate().fadeIn(delay: 200.ms),
-              ],
-            ),
-
-            Container(
-              width: 50.w,
-              height: 50.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    spreadRadius: 1,
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Container(
+                    width: 42.w,
+                    height: 42.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(14.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      LucideIcons.arrowLeft,
+                      color: AttendanceColors.darkText,
+                      size: 20.sp,
+                    ),
                   ),
-                ],
-              ),
-              child: Icon(
-                LucideIcons.clipboardCheck,
-                color: AttendanceColors.primaryOrange,
-                size: 24.sp,
-              ),
-            ).animate().scale(delay: 300.ms),
-          ],
-        ),
+                ).animate().scale(delay: 100.ms),
 
-        SizedBox(height: 8.h),
+                SizedBox(width: 14.w),
 
-        Text(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Text(
+                      'Test Results',
+                      style: AttendanceTypography
+                          .headlineLarge(context),
+                    ).animate().fadeIn(delay: 100.ms),
+
+                    SizedBox(height: 4.h),
+
+                    Text(
+                      '${months[now.month - 1]} ${now.year}',
+                      style: AttendanceTypography
+                          .bodyMedium(context),
+                    ).animate().fadeIn(delay: 200.ms),
+                    
+
+                     Text(
           'Al-Qasim Academy • Class ${student?.grade ?? '--'}',
           style: GoogleFonts.inter(
             fontSize: 12.sp,
@@ -232,6 +324,37 @@ final student =
             color: AttendanceColors.lightText,
           ),
         ).animate().fadeIn(delay: 400.ms),
+                  ],
+                ),
+              ],
+            ),
+
+            // Container(
+            //   width: 50.w,
+            //   height: 50.h,
+            //   decoration: BoxDecoration(
+            //     shape: BoxShape.circle,
+            //     color: Colors.white,
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: Colors.black.withOpacity(0.05),
+            //         blurRadius: 10,
+            //         spreadRadius: 1,
+            //       ),
+            //     ],
+            //   ),
+            //   child: Icon(
+            //     LucideIcons.clipboardCheck,
+            //     color: AttendanceColors.primaryOrange,
+            //     size: 24.sp,
+            //   ),
+            // ).animate().scale(delay: 300.ms),
+          ],
+        ),
+
+        // SizedBox(height: 8.h)
+
+       
       ],
     );
   });

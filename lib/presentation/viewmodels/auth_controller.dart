@@ -94,73 +94,7 @@ final passwordError = RxnString();
     }
   }
 
-  /// LOGIN
-  // Future<void> login() async {
-
-  //   final email =
-  //       emailController.text.trim();
-
-  //   final password =
-  //       passwordController.text.trim();
-
-  //   if (email.isEmpty || password.isEmpty) {
-
-  //     Get.snackbar(
-  //       'Error',
-  //       'Email and password required',
-  //     );
-
-  //     return;
-  //   }
-
-  //   try {
-
-  //     isLoading.value = true;
-
-  //     /// FIREBASE LOGIN
-  //     await _authRepository.login(
-  //       email: email,
-  //       password: password,
-  //     );
-
-  //     /// SAVE LOCAL
-  //     await LocalStorageService.saveUserLogin(
-  //       email: email,
-  //     );
-
-  //     isLoggedIn.value = true;
-
-  //     /// CLEAR FIELDS
-  //     emailController.clear();
-  //     passwordController.clear();
-
-  //     /// GO DASHBOARD
-  //     Get.offAll(() => StudentDashboard());
-
-  //     Get.snackbar(
-  //       'Success',
-  //       'Login successful',
-  //     );
-
-  //   } catch (e) {
-
-  //     await clearSession();
-
-  //     Get.snackbar(
-  //       'Login Failed',
-  //       e.toString().replaceAll(
-  //         'Exception: ',
-  //         '',
-  //       ),
-  //     );
-
-  //   } finally {
-
-  //     isLoading.value = false;
-  //   }
-  // }
-
-
+ 
 
 
 Future<void> login() async {

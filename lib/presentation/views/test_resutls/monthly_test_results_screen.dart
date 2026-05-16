@@ -287,7 +287,8 @@ Widget _buildMonthSummary() {
               icon: LucideIcons.award,
               value: testsTaken == 0
                   ? '--'
-                  : '#${avgRank.toStringAsFixed(0)}',
+                  // : '#${avgRank.toStringAsFixed(0)}',
+                  :'#${controller.averageRank}',
               label: 'Avg Rank',
               color: AttendanceColors.darkText,
             ),
