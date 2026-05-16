@@ -124,44 +124,91 @@ class StudentDashboard extends StatelessWidget {
                   // ),
 
 
-                  Obx(() => AnimatedStatsSection(
-  title: 'Your Performance',
-  filterLabel: 'This Week',
-  stats: [
-    StatItem(
-      title: 'Attendance',
-      value: '${dashboardStatsController.thisWeekAttendance.toStringAsFixed(0)}%',
-      change: dashboardStatsController.attendanceChange,
-      icon: LucideIcons.calendarCheck,
-      color: AttendanceColors.presentColor,
-      delay: 600.ms,
-    ),
-    StatItem(
-      title: 'Avg Test Score',
-      value: '${dashboardStatsController.thisWeekAvgScore.toStringAsFixed(0)}%',
-      change: dashboardStatsController.scoreChange,
-      icon: LucideIcons.clipboardCheck,
-      color: AttendanceColors.primaryOrange,
-      delay: 700.ms,
-    ),
-    StatItem(
-      title: 'Fee Status',
-      value: dashboardStatsController.currentFeeStatus,
-      change: dashboardStatsController.feeChangeText,
-      icon: LucideIcons.wallet,
-      color: AttendanceColors.holidayColor,
-      delay: 800.ms,
-    ),
-    StatItem(
-      title: 'Rank',
-      value: dashboardStatsController.rankChangeText,
-      change: 'This Week',
-      icon: LucideIcons.award,
-      color: AttendanceColors.darkOrange,
-      delay: 900.ms,
-    ),
-  ],
-)),
+//                   Obx(() => AnimatedStatsSection(
+//   title: 'Your Performance',
+//   filterLabel: 'This Week',
+//   stats: [
+//     StatItem(
+//       title: 'Attendance',
+//       value: '${dashboardStatsController.thisWeekAttendance.toStringAsFixed(0)}%',
+//       change: dashboardStatsController.attendanceChange,
+//       icon: LucideIcons.calendarCheck,
+//       color: AttendanceColors.presentColor,
+//       delay: 600.ms,
+//     ),
+//     StatItem(
+//       title: 'Avg Test Score',
+//       value: '${dashboardStatsController.thisWeekAvgScore.toStringAsFixed(0)}%',
+//       change: dashboardStatsController.scoreChange,
+//       icon: LucideIcons.clipboardCheck,
+//       color: AttendanceColors.primaryOrange,
+//       delay: 700.ms,
+//     ),
+//     StatItem(
+//       title: 'Fee Status',
+//       value: dashboardStatsController.currentFeeStatus,
+//       change: dashboardStatsController.feeChangeText,
+//       icon: LucideIcons.wallet,
+//       color: AttendanceColors.holidayColor,
+//       delay: 800.ms,
+//     ),
+//     StatItem(
+//       title: 'Rank',
+//       value: dashboardStatsController.rankChangeText,
+//       change: 'This Week',
+//       icon: LucideIcons.award,
+//       color: AttendanceColors.darkOrange,
+//       delay: 900.ms,
+//     ),
+//   ],
+// )),
+
+Obx(() {
+  if (dashboardStatsController.isLoading.value) {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  return AnimatedStatsSection(
+    title: 'Your Performance',
+    filterLabel: 'This Week',
+    stats: [
+      StatItem(
+        title: 'Attendance',
+        value: '${dashboardStatsController.thisWeekAttendance.toStringAsFixed(0)}%',
+        change: dashboardStatsController.attendanceChange,
+        icon: LucideIcons.calendarCheck,
+        color: AttendanceColors.presentColor,
+        delay: 600.ms,
+      ),
+      StatItem(
+        title: 'Avg Test Score',
+        value: '${dashboardStatsController.thisWeekAvgScore.toStringAsFixed(0)}%',
+        change: dashboardStatsController.scoreChange,
+        icon: LucideIcons.clipboardCheck,
+        color: AttendanceColors.primaryOrange,
+        delay: 700.ms,
+      ),
+      StatItem(
+        title: 'Fee Status',
+        value: dashboardStatsController.currentFeeStatus,
+        change: dashboardStatsController.feeChangeText,
+        icon: LucideIcons.wallet,
+        color: AttendanceColors.holidayColor,
+        delay: 800.ms,
+      ),
+      StatItem(
+        title: 'Rank',
+        value: dashboardStatsController.rankChangeText,
+        change: 'This Week',
+        icon: LucideIcons.award,
+        color: AttendanceColors.darkOrange,
+        delay: 900.ms,
+      ),
+    ],
+  );
+}),
 
                   SizedBox(height: 32.h),
 

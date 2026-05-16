@@ -90,33 +90,32 @@ class LoginScreen extends StatelessWidget {
 //   },
 // ),
 
-PrimaryInputField(
+// PrimaryInputField(
+//   controller: controller.emailController,
+//   hint: 'Student Email',
+//   prefixIcon: LucideIcons.user,
+//   keyboardType: TextInputType.emailAddress,
+// ),
+
+Obx(() => PrimaryInputField(
   controller: controller.emailController,
   hint: 'Student Email',
   prefixIcon: LucideIcons.user,
   keyboardType: TextInputType.emailAddress,
-),
+  errorText: controller.emailError.value,
+  onChanged: (_) => controller.emailError.value = null,
+)),
 
                       SizedBox(height: 16.h),
 
-                    
-                      Obx(() => 
-                      
-                      PrimaryInputField(
-                        controller: controller.passwordController,
+
+            Obx(() => PrimaryInputField(
+  controller: controller.passwordController,
   hint: 'Password',
   prefixIcon: LucideIcons.lock,
   obscureText: !isPasswordVisible.value,
-  onChanged: (value) => controller.password.value = value.trim(),
-  validator: (value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your password';
-    }
-    if (value.length < 6) {
-      return 'Password must be at least 6 characters';
-    }
-    return null;
-  },
+  errorText: controller.passwordError.value,
+  onChanged: (_) => controller.passwordError.value = null,
   suffixIcon: IconButton(
     icon: Icon(
       isPasswordVisible.value ? Icons.visibility_off : Icons.visibility,
@@ -125,7 +124,37 @@ PrimaryInputField(
     ),
     onPressed: () => isPasswordVisible.toggle(),
   ),
-)),
+)),        
+                      // Obx(() => 
+                      
+//                       PrimaryInputField(
+//                         controller: controller.passwordController,
+//   hint: 'Password',
+//   prefixIcon: LucideIcons.lock,
+//   obscureText: !isPasswordVisible.value,
+//   onChanged: (value) => controller.password.value = value.trim(),
+//   validator: (value) {
+//     if (value == null || value.isEmpty) {
+//       return 'Please enter your password';
+//     }
+//     if (value.length < 6) {
+//       return 'Password must be at least 6 characters';
+//     }
+//     return null;
+//   },
+//   suffixIcon: IconButton(
+//     icon: Icon(
+//       isPasswordVisible.value ? Icons.visibility_off : Icons.visibility,
+//       size: 18.sp,
+//       color: Colors.grey,
+//     ),
+//     onPressed: () => isPasswordVisible.toggle(),
+//   ),
+// )),
+
+
+
+
                       SizedBox(height: 28.h),
 
                       // Login Button
