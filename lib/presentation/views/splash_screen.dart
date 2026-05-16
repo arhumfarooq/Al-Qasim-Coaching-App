@@ -59,11 +59,10 @@ class _SplashScreenState extends State<SplashScreen>
 
     Get.offAll(() => StudentDashboard());
 
-  } 
-  
-  else {  
+  } else {
 
     Get.offAll(() => LoginScreen());
+
   }
 }
 
