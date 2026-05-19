@@ -110,6 +110,8 @@ class StudentDashboard extends StatelessWidget {
             
 
 Obx(() {
+    final attendance = dashboardStatsController.thisWeekAttendanceValue.value;
+  final attendanceChange = dashboardStatsController.attendanceChangeValue.value;
   if (dashboardStatsController.isLoading.value) {
     return const Center(
       child: CircularProgressIndicator(),
@@ -120,10 +122,19 @@ Obx(() {
     title: 'Your Performance',
     filterLabel: 'This Week',
     stats: [
+      // StatItem(
+      //   title: 'Attendance',
+      //   value: '${dashboardStatsController.thisWeekAttendance.toStringAsFixed(0)}%',
+      //   change: dashboardStatsController.attendanceChange,
+      //   icon: LucideIcons.calendarCheck,
+      //   color: AttendanceColors.presentColor,
+      //   delay: 600.ms,
+      // ),
+
       StatItem(
         title: 'Attendance',
-        value: '${dashboardStatsController.thisWeekAttendance.toStringAsFixed(0)}%',
-        change: dashboardStatsController.attendanceChange,
+        value: '${attendance.toStringAsFixed(0)}%',
+        change: attendanceChange,
         icon: LucideIcons.calendarCheck,
         color: AttendanceColors.presentColor,
         delay: 600.ms,
