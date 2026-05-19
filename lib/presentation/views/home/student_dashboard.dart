@@ -136,6 +136,26 @@ Obx(() {
         color: AttendanceColors.primaryOrange,
         delay: 700.ms,
       ),
+//       StatItem(
+//   title: 'Avg Test Score',
+//   value:
+//       '${dashboardStatsController.thisWeekAvgScoreValue.toStringAsFixed(0)}%',
+//   change: dashboardStatsController.scoreChangeValue,
+//   icon: LucideIcons.clipboardCheck,
+//   color: AttendanceColors.primaryOrange,
+//   delay: 700.ms,
+// ),
+
+// StatItem(
+//   title: 'Avg Test Score',
+//   value:
+//       '${dashboardStatsController.thisWeekAvgScoreValue.toStringAsFixed(0)}%',
+//   change:
+//       dashboardStatsController.scoreChangeValue.value,
+//   icon: LucideIcons.clipboardCheck,
+//   color: AttendanceColors.primaryOrange,
+//   delay: 700.ms,
+// ),
 
       StatItem(
         title: 'Fee Status',
@@ -145,14 +165,14 @@ Obx(() {
         color: AttendanceColors.holidayColor,
         delay: 800.ms,
       ),
-      StatItem(
-        title: 'Rank',
-        value: dashboardStatsController.rankChangeText,
-        change: 'This Week',
-        icon: LucideIcons.award,
-        color: AttendanceColors.darkOrange,
-        delay: 900.ms,
-      ),
+    StatItem(
+  title: 'Rank',
+  value: dashboardStatsController.rankChangeTextValue.value,
+  change: 'This Week',
+  icon: LucideIcons.award,
+  color: AttendanceColors.darkOrange,
+  delay: 900.ms,
+),
 //       StatItem(
 //   title: 'Rank',
 //   value: dashboardStatsController.rankChangeTextValue.value,

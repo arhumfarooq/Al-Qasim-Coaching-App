@@ -696,47 +696,81 @@ class MonthlyFeeScreen extends StatelessWidget {
 //         )),
 //   );
 // }
+
+
+
 Widget _buildMonthSelector() {
-  const months = [
-    'January', 'February', 'March', 'April',
-    'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December',
+  const allMonths = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
+
+  final joiningMonth =
+      feeController.studentStartMonth.month;
+
+  final visibleMonths =
+      allMonths.sublist(joiningMonth - 1);
 
   return SizedBox(
     height: 48.h,
     child: ListView.separated(
       scrollDirection: Axis.horizontal,
-      itemCount: months.length,
-      separatorBuilder: (_, __) => SizedBox(width: 10.w),
+      itemCount: visibleMonths.length,
+      separatorBuilder: (_, __) =>
+          SizedBox(width: 10.w),
       itemBuilder: (context, index) {
-        final monthNumber = index + 1;
+
+        final monthNumber =
+            joiningMonth + index;
 
         return Obx(() {
+
           final isSelected =
-              feeController.selectedMonth.value == monthNumber;
+              feeController.selectedMonth.value ==
+                  monthNumber;
 
           return GestureDetector(
-            onTap: () => feeController.changeSelectedMonth(monthNumber),
+            onTap: () => feeController
+                .changeSelectedMonth(monthNumber),
+
             child: AnimatedContainer(
               duration: 250.ms,
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding:
+                  EdgeInsets.symmetric(horizontal: 20.w),
+
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(16.r),
+                borderRadius:
+                    BorderRadius.circular(16.r),
+
                 border: Border.all(
                   color: isSelected
                       ? FeeColors.primaryOrange
-                      : FeeColors.primaryOrange.withOpacity(0.12),
+                      : FeeColors.primaryOrange
+                          .withOpacity(0.12),
+
                   width: isSelected ? 1.8 : 1,
                 ),
               ),
+
               child: Center(
                 child: Text(
-                  months[index],
+                  visibleMonths[index],
+
                   style: GoogleFonts.poppins(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w800,
+
                     color: isSelected
                         ? FeeColors.primaryOrange
                         : Colors.black,
@@ -750,6 +784,78 @@ Widget _buildMonthSelector() {
     ),
   );
 }
+// Widget _buildMonthSelector() {
+//   const months = [
+//     'January', 'February', 'March', 'April',
+//     'May', 'June', 'July', 'August',
+//     'September', 'October', 'November', 'December',
+//   ];
+
+//   return SizedBox(
+//     height: 48.h,
+//     child: ListView.separated(
+//       scrollDirection: Axis.horizontal,
+//       itemCount: months.length,
+//       separatorBuilder: (_, __) => SizedBox(width: 10.w),
+//       itemBuilder: (context, index) {
+//         final monthNumber = index + 1;
+// //         final isDisabled = feeController.isBeforeStudentJoinMonth(
+// //   feeController.selectedYear.value,
+// //   monthNumber,
+// // );
+// final isDisabled = feeController.isBeforeStudentJoinMonth(
+//   feeController.selectedYear.value,
+//   monthNumber,
+// );
+
+//         return Obx(() {
+//           final isSelected =
+//               feeController.selectedMonth.value == monthNumber;
+
+//           return 
+//           GestureDetector(
+//             // onTap: () => feeController.changeSelectedMonth(monthNumber),
+// onTap: isDisabled
+//     ? null
+//     : () => feeController.changeSelectedMonth(monthNumber),
+//             child: AnimatedContainer(
+//               duration: 250.ms,
+//               padding: EdgeInsets.symmetric(horizontal: 20.w),
+//               decoration: BoxDecoration(
+//                 color: Colors.white,
+//                 borderRadius: BorderRadius.circular(16.r),
+//                 border: Border.all(
+//                   // color: isSelected
+//                   //     ? FeeColors.primaryOrange
+//                   //     : FeeColors.primaryOrange.withOpacity(0.12),
+// color: isDisabled
+//     ? Colors.grey
+//     : isSelected
+//         ? FeeColors.primaryOrange
+//         : Colors.black,
+                  
+//                   width: isSelected ? 1.8 : 1,
+//                 ),
+//               ),
+//               child: Center(
+//                 child: Text(
+//                   months[index],
+//                   style: GoogleFonts.poppins(
+//                     fontSize: 14.sp,
+//                     fontWeight: FontWeight.w800,
+//                     color: isSelected
+//                         ? FeeColors.primaryOrange
+//                         : Colors.black,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           );
+//         });
+//       },
+//     ),
+//   );
+// }
 
 //   Widget _buildStatusCard(BuildContext context) {
 //     return Obx(
@@ -1085,18 +1191,18 @@ Widget _buildRecordDetails(BuildContext context) {
             color: FeeColors.primaryOrange,
           ),
 
-          SizedBox(height: 12.h),
+          // SizedBox(height: 12.h),
 
-          _detailTile(
-            icon: isPaid
-                ? LucideIcons.userCheck
-                : LucideIcons.userX,
-            title: 'Student Record',
-            value: isPaid ? 'Verified Student' : 'Pending Verification',
-            color: isPaid
-                ? FeeColors.paidColor
-                : FeeColors.overdueColor,
-          ),
+          // _detailTile(
+          //   icon: isPaid
+          //       ? LucideIcons.userCheck
+          //       : LucideIcons.userX,
+          //   title: 'Student Record',
+          //   value: isPaid ? 'Verified Student' : 'Pending Verification',
+          //   color: isPaid
+          //       ? FeeColors.paidColor
+          //       : FeeColors.overdueColor,
+          // ),
         ],
       ),
     ).animate(delay: 320.ms).fadeIn().slideY(begin: 0.13);

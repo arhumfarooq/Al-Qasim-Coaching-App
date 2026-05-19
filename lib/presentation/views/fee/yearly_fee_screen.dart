@@ -770,16 +770,42 @@ Widget _buildYearSwitcher() {
 
  Widget _buildHeroCard(BuildContext context) {
   return Obx(() {
+    // final fees = feeController.fees.toList();
+    // final now = DateTime.now();
+
+    // final paidCount = fees.where((e) {
+    //   return e.status.toLowerCase() == 'paid' &&
+    //       e.month.startsWith('${now.year}-');
+    // }).length;
+
+    // final totalMonths = now.month;
+    // final pendingCount = totalMonths - paidCount;
+
     final fees = feeController.fees.toList();
-    final now = DateTime.now();
+final selectedYear = feeController.selectedYear.value;
+final now = DateTime.now();
 
-    final paidCount = fees.where((e) {
-      return e.status.toLowerCase() == 'paid' &&
-          e.month.startsWith('${now.year}-');
-    }).length;
+final startMonth = feeController.studentStartMonth;
 
-    final totalMonths = now.month;
-    final pendingCount = totalMonths - paidCount;
+final firstMonth = selectedYear == startMonth.year
+    ? startMonth.month
+    : 1;
+
+final lastMonth = selectedYear == now.year
+    ? now.month
+    : 12;
+
+final totalMonths = lastMonth - firstMonth + 1;
+
+final paidCount = fees.where((e) {
+  return e.status.toLowerCase() == 'paid' &&
+      e.month.startsWith('$selectedYear-');
+}).where((e) {
+  final month = int.tryParse(e.month.split('-').last) ?? 1;
+  return month >= firstMonth && month <= lastMonth;
+}).length;
+
+final pendingCount = totalMonths - paidCount;
 
     return Container(
       width: double.infinity,
@@ -828,7 +854,8 @@ Widget _buildYearSwitcher() {
               ),
               SizedBox(height: 5.h),
               Text(
-                'Session ${now.year}-${now.year + 1}',
+                // 'Session ${now.year}-${now.year + 1}',
+'Session $selectedYear-${selectedYear + 1}',
                 style: GoogleFonts.poppins(
                   fontSize: 12.sp,
                   color: FeeColors.lightText,
@@ -1035,7 +1062,198 @@ Widget _buildYearSwitcher() {
   //   );
   // }
 
-  Widget _buildMonthTimeline(BuildContext context) {
+  // Widget _buildMonthTimeline(BuildContext context) {
+  // const months = [
+  //   'January',
+  //   'February',
+  //   'March',
+  //   'April',
+  //   'May',
+  //   'June',
+  //   'July',
+  //   'August',
+  //   'September',
+  //   'October',
+  //   'November',
+  //   'December',
+  // ];
+
+  // return Obx(() {
+  //   final fees = feeController.fees.toList();
+  //   final now = DateTime.now();
+
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       _sectionHeader(
+  //         title: 'Monthly Timeline',
+  //         subtitle: 'Complete yearly fee record month wise',
+  //       ),
+
+  //       SizedBox(height: 14.h),
+
+  //       ListView.separated(
+  //         itemCount: 12,
+  //         shrinkWrap: true,
+  //         physics: const NeverScrollableScrollPhysics(),
+  //         separatorBuilder: (_, __) => SizedBox(height: 10.h),
+  //         itemBuilder: (context, index) {
+  //           final monthNumber = index + 1;
+
+  //           final monthKey =
+  //               '${now.year}-${monthNumber.toString().padLeft(2, '0')}';
+
+  //           final fee = fees.firstWhereOrNull(
+  //             (e) => e.month == monthKey,
+  //           );
+
+  //           final isFutureMonth = monthNumber > now.month;
+
+  //           final isPaid =
+  //               fee?.status.toLowerCase() == 'paid';
+
+  //           final status = isFutureMonth
+  //               ? 'Upcoming'
+  //               : isPaid
+  //                   ? 'Paid'
+  //                   : 'Unpaid';
+
+  //           final color = isFutureMonth
+  //               ? Colors.grey
+  //               : isPaid
+  //                   ? FeeColors.paidColor
+  //                   : FeeColors.overdueColor;
+
+  //           final icon = isFutureMonth
+  //               ? LucideIcons.clock
+  //               : isPaid
+  //                   ? LucideIcons.checkCircle2
+  //                   : LucideIcons.alertCircle;
+
+  //           return InkWell(
+  //             onTap: isFutureMonth
+  //                 ? null
+  //                 : () {
+  //                     Get.to(
+  //                       () => MonthlyFeeScreen(),
+  //                       arguments: {
+  //                         'year': now.year,
+  //                         'month': monthNumber,
+  //                       },
+  //                     );
+  //                   },
+  //             borderRadius: BorderRadius.circular(20.r),
+  //             child: Opacity(
+  //               opacity: isFutureMonth ? 0.55 : 1,
+  //               child: Container(
+  //                 padding: EdgeInsets.symmetric(
+  //                   horizontal: 15.w,
+  //                   vertical: 14.h,
+  //                 ),
+  //                 decoration: BoxDecoration(
+  //                   color: isFutureMonth
+  //                       ? Colors.grey.shade100
+  //                       : Colors.white,
+  //                   borderRadius: BorderRadius.circular(20.r),
+  //                   border: Border.all(
+  //                     color: color.withOpacity(0.12),
+  //                   ),
+  //                   boxShadow: [
+  //                     if (!isFutureMonth)
+  //                       BoxShadow(
+  //                         color: Colors.black.withOpacity(0.035),
+  //                         blurRadius: 12,
+  //                         offset: const Offset(0, 5),
+  //                       ),
+  //                   ],
+  //                 ),
+  //                 child: Row(
+  //                   children: [
+  //                     Container(
+  //                       width: 42.w,
+  //                       height: 42.w,
+  //                       decoration: BoxDecoration(
+  //                         color: color.withOpacity(0.1),
+  //                         borderRadius: BorderRadius.circular(14.r),
+  //                       ),
+  //                       child: 
+                        
+  //                       Icon(
+  //                         icon,
+  //                         color: color,
+  //                         size: 21.sp,
+  //                       ),
+  //                     ),
+
+  //                     SizedBox(width: 14.w),
+
+  //                     Expanded(
+  //                       child: Column(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         children: [
+  //                           Text(
+  //                             '${months[index]} ${now.year}',
+  //                             maxLines: 1,
+  //                             overflow: TextOverflow.ellipsis,
+  //                             style: GoogleFonts.poppins(
+  //                               fontSize: 15.sp,
+  //                               fontWeight: FontWeight.w800,
+  //                               color: isFutureMonth
+  //                                   ? Colors.grey
+  //                                   : FeeColors.darkText,
+  //                             ),
+  //                           ),
+
+  //                           SizedBox(height: 3.h),
+
+  //                           Text(
+  //                             status == 'Paid'
+  //                                 ? 'Payment record completed'
+  //                                 : status == 'Unpaid'
+  //                                     ? 'Payment not marked paid'
+  //                                     : 'Upcoming month',
+  //                             maxLines: 1,
+  //                             overflow: TextOverflow.ellipsis,
+  //                             style: GoogleFonts.poppins(
+  //                               fontSize: 11.sp,
+  //                               color: isFutureMonth
+  //                                   ? Colors.grey
+  //                                   : FeeColors.lightText,
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+
+  //                     SizedBox(width: 8.w),
+
+  //                     _statusChip(status),
+
+  //                     SizedBox(width: 4.w),
+
+  //                     Icon(
+  //                       LucideIcons.chevronRight,
+  //                       size: 18.sp,
+  //                       color: isFutureMonth
+  //                           ? Colors.grey
+  //                           : FeeColors.lightText.withOpacity(0.7),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ).animate(delay: (index * 45).ms).fadeIn().slideX(begin: 0.08),
+  //           );
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // });
+
+
+// }
+
+
+Widget _buildMonthTimeline(BuildContext context) {
   const months = [
     'January',
     'February',
@@ -1053,7 +1271,24 @@ Widget _buildYearSwitcher() {
 
   return Obx(() {
     final fees = feeController.fees.toList();
+    final selectedYear = feeController.selectedYear.value;
     final now = DateTime.now();
+
+    final startMonth = feeController.studentStartMonth;
+
+    final firstMonth = selectedYear == startMonth.year
+        ? startMonth.month
+        : 1;
+
+    final lastMonth = selectedYear == now.year
+        ? now.month
+        : 12;
+
+    final visibleMonths = <int>[];
+
+    for (int m = firstMonth; m <= lastMonth; m++) {
+      visibleMonths.add(m);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1066,153 +1301,125 @@ Widget _buildYearSwitcher() {
         SizedBox(height: 14.h),
 
         ListView.separated(
-          itemCount: 12,
+          itemCount: visibleMonths.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           separatorBuilder: (_, __) => SizedBox(height: 10.h),
           itemBuilder: (context, index) {
-            final monthNumber = index + 1;
+            final monthNumber = visibleMonths[index];
 
             final monthKey =
-                '${now.year}-${monthNumber.toString().padLeft(2, '0')}';
+                '$selectedYear-${monthNumber.toString().padLeft(2, '0')}';
 
             final fee = fees.firstWhereOrNull(
               (e) => e.month == monthKey,
             );
 
-            final isFutureMonth = monthNumber > now.month;
-
             final isPaid =
                 fee?.status.toLowerCase() == 'paid';
 
-            final status = isFutureMonth
-                ? 'Upcoming'
-                : isPaid
-                    ? 'Paid'
-                    : 'Unpaid';
+            final status = isPaid ? 'Paid' : 'Unpaid';
 
-            final color = isFutureMonth
-                ? Colors.grey
-                : isPaid
-                    ? FeeColors.paidColor
-                    : FeeColors.overdueColor;
+            final color = isPaid
+                ? FeeColors.paidColor
+                : FeeColors.overdueColor;
 
-            final icon = isFutureMonth
-                ? LucideIcons.clock
-                : isPaid
-                    ? LucideIcons.checkCircle2
-                    : LucideIcons.alertCircle;
+            final icon = isPaid
+                ? LucideIcons.checkCircle2
+                : LucideIcons.alertCircle;
 
             return InkWell(
-              onTap: isFutureMonth
-                  ? null
-                  : () {
-                      Get.to(
-                        () => MonthlyFeeScreen(),
-                        arguments: {
-                          'year': now.year,
-                          'month': monthNumber,
-                        },
-                      );
-                    },
+              onTap: () {
+                Get.to(
+                  () => MonthlyFeeScreen(),
+                  arguments: {
+                    'year': selectedYear,
+                    'month': monthNumber,
+                  },
+                );
+              },
               borderRadius: BorderRadius.circular(20.r),
-              child: Opacity(
-                opacity: isFutureMonth ? 0.55 : 1,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 15.w,
-                    vertical: 14.h,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 15.w,
+                  vertical: 14.h,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(
+                    color: color.withOpacity(0.12),
                   ),
-                  decoration: BoxDecoration(
-                    color: isFutureMonth
-                        ? Colors.grey.shade100
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(
-                      color: color.withOpacity(0.12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.035),
+                      blurRadius: 12,
+                      offset: const Offset(0, 5),
                     ),
-                    boxShadow: [
-                      if (!isFutureMonth)
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.035),
-                          blurRadius: 12,
-                          offset: const Offset(0, 5),
-                        ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 42.w,
-                        height: 42.w,
-                        decoration: BoxDecoration(
-                          color: color.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(14.r),
-                        ),
-                        child: 
-                        
-                        Icon(
-                          icon,
-                          color: color,
-                          size: 21.sp,
-                        ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 42.w,
+                      height: 42.w,
+                      decoration: BoxDecoration(
+                        color: color.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(14.r),
                       ),
+                      child: Icon(
+                        icon,
+                        color: color,
+                        size: 21.sp,
+                      ),
+                    ),
 
-                      SizedBox(width: 14.w),
+                    SizedBox(width: 14.w),
 
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${months[index]} ${now.year}',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.w800,
-                                color: isFutureMonth
-                                    ? Colors.grey
-                                    : FeeColors.darkText,
-                              ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${months[monthNumber - 1]} $selectedYear',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.poppins(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w800,
+                              color: FeeColors.darkText,
                             ),
+                          ),
 
-                            SizedBox(height: 3.h),
+                          SizedBox(height: 3.h),
 
-                            Text(
-                              status == 'Paid'
-                                  ? 'Payment record completed'
-                                  : status == 'Unpaid'
-                                      ? 'Payment not marked paid'
-                                      : 'Upcoming month',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                fontSize: 11.sp,
-                                color: isFutureMonth
-                                    ? Colors.grey
-                                    : FeeColors.lightText,
-                              ),
+                          Text(
+                            isPaid
+                                ? 'Payment record completed'
+                                : 'Payment not marked paid',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.poppins(
+                              fontSize: 11.sp,
+                              color: FeeColors.lightText,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                    ),
 
-                      SizedBox(width: 8.w),
+                    SizedBox(width: 8.w),
 
-                      _statusChip(status),
+                    _statusChip(status),
 
-                      SizedBox(width: 4.w),
+                    SizedBox(width: 4.w),
 
-                      Icon(
-                        LucideIcons.chevronRight,
-                        size: 18.sp,
-                        color: isFutureMonth
-                            ? Colors.grey
-                            : FeeColors.lightText.withOpacity(0.7),
-                      ),
-                    ],
-                  ),
+                    Icon(
+                      LucideIcons.chevronRight,
+                      size: 18.sp,
+                      color: FeeColors.lightText.withOpacity(0.7),
+                    ),
+                  ],
                 ),
               ).animate(delay: (index * 45).ms).fadeIn().slideX(begin: 0.08),
             );

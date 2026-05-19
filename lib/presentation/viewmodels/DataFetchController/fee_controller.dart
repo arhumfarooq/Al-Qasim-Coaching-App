@@ -65,13 +65,28 @@ class FeesController extends GetxController {
   }
 
 
+// List<FeeModel> get unpaidFees {
+//   return fees
+//       .where((e) => e.status != 'paid')
+//       .toList()
+//     ..sort((a, b) => a.month.compareTo(b.month));
+// }
+
+
 List<FeeModel> get unpaidFees {
-  return fees
-      .where((e) => e.status != 'paid')
-      .toList()
+  return fees.where((e) {
+    if (e.status == 'paid') return false;
+
+    final parts = e.month.split('-');
+    if (parts.length != 2) return false;
+
+    final year = int.tryParse(parts[0]) ?? DateTime.now().year;
+    final month = int.tryParse(parts[1]) ?? DateTime.now().month;
+
+    return !isBeforeStudentJoinMonth(year, month);
+  }).toList()
     ..sort((a, b) => a.month.compareTo(b.month));
 }
-
 
   String formatMonth(String monthKey) {
     final parts = monthKey.split('-');
@@ -99,6 +114,25 @@ List<FeeModel> get unpaidFees {
     return '${months[month - 1]} $year';
   }
 
+
+
+DateTime get studentStartMonth {
+  final now = DateTime.now();
+  final student = currentStudent;
+
+  final joiningDate = student?.createdAt ?? now;
+
+  return DateTime(
+    joiningDate.year,
+    joiningDate.month,
+    1,
+  );
+}
+
+bool isBeforeStudentJoinMonth(int year, int month) {
+  final selected = DateTime(year, month, 1);
+  return selected.isBefore(studentStartMonth);
+}
 
 
 StudentModel? get currentStudent =>
@@ -230,13 +264,36 @@ final selectedMonth = DateTime.now().month.obs;
 String get selectedMonthKey =>
     '${selectedYear.value}-${selectedMonth.value.toString().padLeft(2, '0')}';
 
+// FeeModel? get selectedFee {
+//   return fees.firstWhereOrNull(
+//     (e) => e.month == selectedMonthKey,
+//   );
+// }
+
+
 FeeModel? get selectedFee {
+  if (isBeforeStudentJoinMonth(
+    selectedYear.value,
+    selectedMonth.value,
+  )) {
+    return null;
+  }
+
   return fees.firstWhereOrNull(
     (e) => e.month == selectedMonthKey,
   );
 }
 
+// void changeSelectedMonth(int month) {
+//   selectedMonth.value = month;
+// }
+
+
 void changeSelectedMonth(int month) {
+  if (isBeforeStudentJoinMonth(selectedYear.value, month)) {
+    return;
+  }
+
   selectedMonth.value = month;
 }
 

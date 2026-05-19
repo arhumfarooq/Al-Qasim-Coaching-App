@@ -1100,16 +1100,161 @@ Widget _buildHeaderSection(BuildContext context) {
   // }
 
 
+// Widget _buildStatusOverviewCard(BuildContext context) {
+//   return Obx(() {
+//     final now = DateTime.now();
+
+//     final paidMonths = feeController.paidCount;
+//     final totalMonths = now.month;
+//     final pendingMonths = totalMonths - paidMonths;
+
+//     final overallStatus =
+//         pendingMonths == 0 ? 'Clear' : 'Pending';
+
+//     return Container(
+//       padding: EdgeInsets.all(22.w),
+//       decoration: BoxDecoration(
+//         gradient: FeeColors.primaryGradient,
+//         borderRadius: BorderRadius.circular(26.r),
+//         boxShadow: [
+//           BoxShadow(
+//             color: FeeColors.primaryOrange.withOpacity(0.28),
+//             blurRadius: 24,
+//             offset: const Offset(0, 10),
+//           ),
+//         ],
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Row(
+//             children: [
+//               Container(
+//                 padding: EdgeInsets.all(12.w),
+//                 decoration: BoxDecoration(
+//                   color: Colors.white.withOpacity(0.18),
+//                   borderRadius: BorderRadius.circular(16.r),
+//                 ),
+//                 child: Icon(
+//                   LucideIcons.shieldCheck,
+//                   color: Colors.white,
+//                   size: 24.sp,
+//                 ),
+//               ),
+
+//               SizedBox(width: 14.w),
+
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       'Academic Year ${now.year}',
+//                       style: GoogleFonts.poppins(
+//                         fontSize: 17.sp,
+//                         fontWeight: FontWeight.w700,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                     SizedBox(height: 3.h),
+//                     Text(
+//                       'Overall fee record summary',
+//                       style: GoogleFonts.poppins(
+//                         fontSize: 12.sp,
+//                         color: Colors.white.withOpacity(0.75),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+
+//               Container(
+//                 padding: EdgeInsets.symmetric(
+//                   horizontal: 12.w,
+//                   vertical: 7.h,
+//                 ),
+//                 decoration: BoxDecoration(
+//                   color: Colors.white.withOpacity(0.18),
+//                   borderRadius: BorderRadius.circular(30.r),
+//                 ),
+//                 child: Text(
+//                  "Active",
+//                   style: GoogleFonts.poppins(
+//                     fontSize: 12.sp,
+//                     fontWeight: FontWeight.w700,
+//                     color: Colors.white,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+
+//           SizedBox(height: 22.h),
+
+//           Row(
+//             children: [
+//               Expanded(
+//                 child: _buildWhiteStat(
+//                   icon: LucideIcons.checkCircle2,
+//                   title: 'Paid Months',
+//                   value: '$paidMonths',
+//                 ),
+//               ),
+
+//               SizedBox(width: 12.w),
+
+//               Expanded(
+//                 child: _buildWhiteStat(
+//                   icon: LucideIcons.clock3,
+//                   title: 'Pending',
+//                   value: '$pendingMonths',
+//                 ),
+//               ),
+
+//               SizedBox(width: 12.w),
+
+//               Expanded(
+//                 child: _buildWhiteStat(
+//                   icon: LucideIcons.calendar,
+//                   title: 'Total',
+//                   value: '$totalMonths',
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     ).animate(delay: 400.ms).fadeIn().slideY(begin: 0.18, end: 0);
+//   });
+// }
+
 Widget _buildStatusOverviewCard(BuildContext context) {
   return Obx(() {
     final now = DateTime.now();
 
-    final paidMonths = feeController.paidCount;
-    final totalMonths = now.month;
-    final pendingMonths = totalMonths - paidMonths;
+    final startMonth = feeController.studentStartMonth;
 
-    final overallStatus =
-        pendingMonths == 0 ? 'Clear' : 'Pending';
+    final firstMonth = now.year == startMonth.year
+        ? startMonth.month
+        : 1;
+
+    final totalMonths = now.month - firstMonth + 1;
+
+    final paidMonths = feeController.fees.where((e) {
+      if (e.status.toLowerCase() != 'paid') return false;
+
+      final parts = e.month.split('-');
+      if (parts.length != 2) return false;
+
+      final year = int.tryParse(parts[0]) ?? now.year;
+      final month = int.tryParse(parts[1]) ?? now.month;
+
+      return year == now.year &&
+          month >= firstMonth &&
+          month <= now.month;
+    }).length;
+
+    final pendingMonths = totalMonths - paidMonths;
 
     return Container(
       padding: EdgeInsets.all(22.w),
@@ -1141,9 +1286,7 @@ Widget _buildStatusOverviewCard(BuildContext context) {
                   size: 24.sp,
                 ),
               ),
-
               SizedBox(width: 14.w),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1167,7 +1310,6 @@ Widget _buildStatusOverviewCard(BuildContext context) {
                   ],
                 ),
               ),
-
               Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: 12.w,
@@ -1178,7 +1320,7 @@ Widget _buildStatusOverviewCard(BuildContext context) {
                   borderRadius: BorderRadius.circular(30.r),
                 ),
                 child: Text(
-                 "Active",
+                  'Active',
                   style: GoogleFonts.poppins(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w700,
@@ -1200,9 +1342,7 @@ Widget _buildStatusOverviewCard(BuildContext context) {
                   value: '$paidMonths',
                 ),
               ),
-
               SizedBox(width: 12.w),
-
               Expanded(
                 child: _buildWhiteStat(
                   icon: LucideIcons.clock3,
@@ -1210,9 +1350,7 @@ Widget _buildStatusOverviewCard(BuildContext context) {
                   value: '$pendingMonths',
                 ),
               ),
-
               SizedBox(width: 12.w),
-
               Expanded(
                 child: _buildWhiteStat(
                   icon: LucideIcons.calendar,
