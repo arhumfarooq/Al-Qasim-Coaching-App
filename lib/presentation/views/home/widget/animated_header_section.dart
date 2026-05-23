@@ -10,11 +10,16 @@ class AnimatedHeaderSection extends StatelessWidget {
   final RxString greeting;
   final String userName;
   final String classInfo;
+  final String rollNumber;
   final IconData Function(String) getGreetingIcon;
+  VoidCallback? onLogout;
 
-  const AnimatedHeaderSection({
+  AnimatedHeaderSection({
+    
     super.key,
+    this.onLogout,
     required this.greeting,
+    required this.rollNumber,
     required this.userName,
     required this.classInfo,
     required this.getGreetingIcon,
@@ -26,30 +31,89 @@ class AnimatedHeaderSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Greeting row
-        Obx(() => Row(
-              children: [
-                Text(
-                  greeting.value,
-                  style: GoogleFonts.poppins(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AttendanceColors.lightText,
-                  ),
-                )
-                    .animate(delay: 100.ms)
-                    .fadeIn(duration: 600.ms)
-                    .slideX(begin: -0.2, end: 0),
-                SizedBox(width: 8.w),
-                Icon(
-                  getGreetingIcon(greeting.value),
-                  size: 20.sp,
-                  color: AttendanceColors.primaryOrange,
-                )
-                    .animate(delay: 200.ms)
-                    .scale(begin: const Offset(0, 0), end: const Offset(1, 1))
-                    .fadeIn(duration: 500.ms),
-              ],
-            )),
+        Obx(() =>
+        
+        //  Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       children: [
+        //         Row(
+        //           children: [
+        //             Text(
+        //               greeting.value,
+        //               style: GoogleFonts.poppins(
+        //                 fontSize: 18.sp,
+        //                 fontWeight: FontWeight.w600,
+        //                 color: AttendanceColors.lightText,
+        //               ),
+        //             )
+        //                 .animate(delay: 100.ms)
+        //                 .fadeIn(duration: 600.ms)
+        //                 .slideX(begin: -0.2, end: 0),
+        //         SizedBox(width: 8.w),
+
+        //                    Icon(
+        //           getGreetingIcon(greeting.value),
+        //           size: 20.sp,
+        //           color: AttendanceColors.primaryOrange,
+        //         )
+        //             .animate(delay: 200.ms)
+        //             .scale(begin: const Offset(0, 0), end: const Offset(1, 1))
+        //             .fadeIn(duration: 500.ms),
+
+        //                 // Icon(Icons.logout)
+        //           ],
+        //         ),
+        //                   InkWell(
+        //                     onTap: onLogout,
+        //                     child: Icon(
+        //                       Icons.logout_rounded,
+        //                       size: 23.sp,
+        //                       color: AttendanceColors.absentColor,
+        //                     ),
+        //                   ),
+             
+        //       ],
+  
+            // )
+            Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Expanded(
+      child: Row(
+        children: [
+          Text(
+            greeting.value,
+            style: GoogleFonts.poppins(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: AttendanceColors.lightText,
+            ),
+          ),
+
+          SizedBox(width: 8.w),
+
+          Icon(
+            getGreetingIcon(greeting.value),
+            size: 20.sp,
+            color: AttendanceColors.primaryOrange,
+          ),
+        ],
+      ),
+    ),
+
+     InkWell(
+                            onTap: onLogout,
+                            child: Icon(
+                              Icons.logout_rounded,
+                              size: 23.sp,
+                              color: AttendanceColors.absentColor,
+                            ),
+                          ),
+
+  ],
+),
+            
+            ),
 
         SizedBox(height: 4.h),
 
@@ -82,27 +146,38 @@ class AnimatedHeaderSection extends StatelessWidget {
         SizedBox(height: 8.h),
 
         /// Class info
-        Row(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          
           children: [
-            Icon(
-              LucideIcons.graduationCap,
-              size: 16.sp,
-              color: AttendanceColors.primaryOrange.withOpacity(0.8),
-            ),
-            SizedBox(width: 8.w),
-            Text(
-              classInfo,
-              style: GoogleFonts.poppins(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: AttendanceColors.lightText,
-              ),
-            ),
+            Row(
+              children: [
+                Icon(
+                  LucideIcons.graduationCap,
+                  size: 16.sp,
+                  color: AttendanceColors.primaryOrange.withOpacity(0.8),
+                ),
+                SizedBox(width: 8.w),
+                Text(
+                  classInfo ,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AttendanceColors.lightText,
+                  ),
+                ),
+            
+               
+              ],
+            )
+                .animate(delay: 500.ms)
+                .fadeIn(duration: 600.ms)
+                .slideY(begin: 0.2, end: 0),
+                
           ],
-        )
-            .animate(delay: 500.ms)
-            .fadeIn(duration: 600.ms)
-            .slideY(begin: 0.2, end: 0),
+        ),
+
+            
       ],
     );
   }

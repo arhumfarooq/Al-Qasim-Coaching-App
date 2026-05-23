@@ -1521,6 +1521,7 @@
 
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/core/constants/enums.dart';
+import 'package:qr_code_scanner/core/utils/app_toast.dart';
 import 'package:qr_code_scanner/data/models/datafetch/attendance_day_model.dart';
 import 'package:qr_code_scanner/data/repositories/DataFetchRepo/attendance_repository.dart';
 import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/student_controller.dart';
@@ -1730,10 +1731,10 @@ class AttendanceController extends GetxController {
 
       final currentStudent = _studentController.student.value;
 
-      if (currentStudent == null) {
-        Get.snackbar('Error', 'Student data not found');
-        return;
-      }
+    if (currentStudent == null) {
+  AppToast.error('Student data not found');
+  return;
+}
 
       final classId = _studentClassId(
         currentStudent.grade,
@@ -1782,7 +1783,7 @@ print('RECORDS: $records');
 
       attendanceDays.assignAll(days);
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+     AppToast.error(e.toString());
     } finally {
       isLoading.value = false;
     }

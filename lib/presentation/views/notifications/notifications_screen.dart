@@ -10,6 +10,7 @@ import 'package:qr_code_scanner/core/constants/attendance_Colors.dart';
 import 'package:qr_code_scanner/data/models/datafetch/notification_model.dart';
 // import 'package:qr_code_scanner/data/models/notification_model.dart';
 import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/notification_controller.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationsScreen extends StatelessWidget {
   NotificationsScreen({super.key});
@@ -206,51 +207,110 @@ class NotificationsScreen extends StatelessWidget {
   }
 
   Widget _buildNotificationsList() {
-    return Obx(() {
-      if (controller.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
-      }
+    return 
+    
+    // Obx(() {
+    //   if (controller.isLoading.value) {
+    //     return const Center(child: CircularProgressIndicator());
+    //   }
 
-      if (controller.notifications.isEmpty) {
-        return _buildEmptyState();
-      }
+    //   if (controller.notifications.isEmpty) {
+    //     return _buildEmptyState();
+    //   }
 
-      final grouped = controller.groupedNotifications;
-      final dateKeys = grouped.keys.toList();
+    //   final grouped = controller.groupedNotifications;
+    //   final dateKeys = grouped.keys.toList();
 
-      return RefreshIndicator(
-        color: AttendanceColors.primaryOrange,
-        onRefresh: () async => controller.loadNotifications(),
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          itemCount: dateKeys.length,
-          itemBuilder: (context, dateIndex) {
-            final date = dateKeys[dateIndex];
-            final items = grouped[date] ?? [];
+    //   return RefreshIndicator(
+    //     color: AttendanceColors.primaryOrange,
+    //     onRefresh: () async => controller.loadNotifications(),
+    //     child: ListView.builder(
+    //       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+    //       itemCount: dateKeys.length,
+    //       itemBuilder: (context, dateIndex) {
+    //         final date = dateKeys[dateIndex];
+    //         final items = grouped[date] ?? [];
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                  child: Text(
-                    date,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                      color: AttendanceColors.darkText,
+    //         return Column(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             Padding(
+    //               padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+    //               child: Text(
+    //                 date,
+    //                 style: GoogleFonts.poppins(
+    //                   fontSize: 14.sp,
+    //                   fontWeight: FontWeight.w700,
+    //                   color: AttendanceColors.darkText,
+    //                 ),
+    //               ),
+    //             ),
+    //             ...items.asMap().entries.map((entry) {
+    //               return _buildNotificationCard(entry.value, entry.key);
+    //             }),
+    //           ],
+    //         );
+    //       },
+    //     ),
+    //   );
+    // });
+
+    Obx(() {
+  return Skeletonizer(
+    enabled: controller.isLoading.value,
+
+    child: controller.notifications.isEmpty
+        ? _buildEmptyState()
+        : RefreshIndicator(
+            color: AttendanceColors.primaryOrange,
+            onRefresh: () async => controller.loadNotifications(),
+
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 8.h,
+              ),
+
+              itemCount: controller.groupedNotifications.keys.length,
+
+              itemBuilder: (context, dateIndex) {
+                final date =
+                    controller.groupedNotifications.keys.toList()[dateIndex];
+
+                final items =
+                    controller.groupedNotifications[date] ?? [];
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 10.h,
+                        bottom: 10.h,
+                      ),
+                      child: Text(
+                        date,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AttendanceColors.darkText,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                ...items.asMap().entries.map((entry) {
-                  return _buildNotificationCard(entry.value, entry.key);
-                }),
-              ],
-            );
-          },
-        ),
-      );
-    });
+
+                    ...items.asMap().entries.map((entry) {
+                      return _buildNotificationCard(
+                        entry.value,
+                        entry.key,
+                      );
+                    }),
+                  ],
+                );
+              },
+            ),
+          ),
+  );
+});
   }
 
   Widget _buildNotificationCard(NotificationModel notification, int index) {

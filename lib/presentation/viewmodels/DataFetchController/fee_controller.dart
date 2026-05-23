@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:qr_code_scanner/core/utils/app_toast.dart';
 import 'package:qr_code_scanner/data/models/datafetch/fee_model.dart';
 import 'package:qr_code_scanner/data/models/datafetch/student_model.dart';
 import 'package:qr_code_scanner/data/repositories/DataFetchRepo/fee_repository.dart';
@@ -47,7 +48,7 @@ class FeesController extends GetxController {
       final student = _studentController.student.value;
 
       if (student == null) {
-        Get.snackbar('Error', 'Student data not found');
+        AppToast.error('Student data not found');
         return;
       }
 
@@ -58,7 +59,9 @@ class FeesController extends GetxController {
       fees.assignAll(data);
       loadAvailableYears();
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      // Get.snackbar('Error', e.toString());
+
+     AppToast.error(e.toString());
     } finally {
       isLoading.value = false;
     }

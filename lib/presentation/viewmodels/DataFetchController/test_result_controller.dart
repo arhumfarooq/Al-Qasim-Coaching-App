@@ -236,6 +236,7 @@
 // }
 
 import 'package:get/get.dart';
+import 'package:qr_code_scanner/core/utils/app_toast.dart';
 import 'package:qr_code_scanner/data/models/datafetch/student_model.dart';
 import 'package:qr_code_scanner/data/models/datafetch/test_result_model.dart';
 import 'package:qr_code_scanner/data/repositories/DataFetchRepo/test_result_repository.dart';
@@ -276,7 +277,8 @@ class TestResultController extends GetxController {
       final student = _studentController.student.value;
 
       if (student == null) {
-        Get.snackbar('Error', 'Student data not found');
+        // Get.snackbar('Error', 'Student data not found');
+          AppToast.error('Student data not found');
         return;
       }
 
@@ -292,7 +294,8 @@ class TestResultController extends GetxController {
       results.assignAll(studentData);
       classResults.assignAll(allClassData);
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      // Get.snackbar('Error', e.toString());
+      AppToast.error(e.toString());
     } finally {
       isLoading.value = false;
     }

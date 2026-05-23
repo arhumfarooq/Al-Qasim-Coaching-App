@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:qr_code_scanner/core/utils/app_toast.dart';
 import 'package:qr_code_scanner/data/models/datafetch/student_model.dart';
 // import 'package:qr_code_scanner/data/models/student_model.dart';
 import 'package:qr_code_scanner/data/repositories/DataFetchRepo/student_repositry.dart';
@@ -26,7 +27,8 @@ class StudentController extends GetxController {
 
 
       if (email == null || email.isEmpty) {
-        Get.snackbar('Error', 'User email not found');
+        // Get.snackbar('Error', 'User email not found');
+        AppToast.error('User email not found');
         return;
       }
 
@@ -35,13 +37,15 @@ class StudentController extends GetxController {
 
 
       if (result == null) {
-        Get.snackbar('Error', 'Student data not found');
+        // Get.snackbar('Error', 'Student data not found');
+        AppToast.error('Student data not found');
         return;
       }
 
       student.value = result;
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      // Get.snackbar('Error', e.toString());
+      AppToast.error(e.toString());
     } finally {
       isLoading.value = false;
     }

@@ -10,6 +10,7 @@ import 'package:qr_code_scanner/data/models/datafetch/test_result_model.dart';
 import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/test_result_controller.dart';
 import 'package:qr_code_scanner/presentation/views/splash_screen.dart';
 import 'package:qr_code_scanner/presentation/views/test_resutls/monthly_test_results_screen.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class TestResultsScreen extends StatelessWidget {
   final TestResultController testResultController = Get.put(TestResultController());
@@ -661,203 +662,410 @@ Widget _buildHeaderSection(BuildContext context) {
   // }
 
 
- Widget _buildLatestTestCard(context) {
-  return Obx(() {
+//  Widget _buildLatestTestCard(context) {
+//   return 
+//   Obx(() {
 
-    if (testResultController.isLoading.value) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+//     if (testResultController.isLoading.value) {
+//       return const Center(
+//         child: CircularProgressIndicator(),
+//       );
+//     }
+
+//     final item = testResultController.latestResult;
+
+//     if (item == null) {
+//       return const Center(
+//         child: Text('No test results found'),
+//       );
+//     }
+
+//     final score = item.percentage.round();
+
+//     return Skeletonizer(
+//         enabled: testResultController.isLoading.value,
+//       child: Builder(
+//         child: Container(
+//           padding: EdgeInsets.all(20.w),
+//           decoration: BoxDecoration(
+//             color: Colors.white,
+//             borderRadius: BorderRadius.circular(20.r),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: Colors.black.withOpacity(0.05),
+//                 blurRadius: 15,
+//                 spreadRadius: 2,
+//               ),
+//             ],
+//           ),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+        
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+        
+//                   Text(
+//                     'Latest Test',
+//                     style: AttendanceTypography.headlineMedium(context),
+//                   ),
+        
+//                   Container(
+//                     padding: EdgeInsets.symmetric(
+//                       horizontal: 12.w,
+//                       vertical: 6.h,
+//                     ),
+//                     decoration: BoxDecoration(
+//                       color: AttendanceColors.primaryOrange.withOpacity(0.1),
+//                       borderRadius: BorderRadius.circular(20.r),
+//                     ),
+//                     child: Row(
+//                       children: [
+        
+//                         Icon(
+//                           LucideIcons.clock,
+//                           size: 14.sp,
+//                           color: AttendanceColors.primaryOrange,
+//                         ),
+        
+//                         SizedBox(width: 4.w),
+        
+//                         Text(
+//                           _formatDate(item.testDate),
+//                           style: GoogleFonts.inter(
+//                             fontSize: 12.sp,
+//                             fontWeight: FontWeight.w600,
+//                             color: AttendanceColors.primaryOrange,
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+        
+//               SizedBox(height: 16.h),
+        
+//               Row(
+//                 children: [
+        
+//                   Expanded(
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+        
+//                         Text(
+//                           item.title,
+//                           style: GoogleFonts.poppins(
+//                             fontSize: 18.sp,
+//                             fontWeight: FontWeight.w700,
+//                             color: AttendanceColors.darkText,
+//                           ),
+//                         ),
+        
+//                         SizedBox(height: 4.h),
+        
+//                         Text(
+//                           '${item.obtainedMarks}/${item.totalMarks} Marks',
+//                           style: GoogleFonts.inter(
+//                             fontSize: 14.sp,
+//                             color: AttendanceColors.lightText,
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+        
+//                   Column(
+//                     crossAxisAlignment: CrossAxisAlignment.end,
+//                     children: [
+        
+//                       Container(
+//                         padding: EdgeInsets.symmetric(
+//                           horizontal: 16.w,
+//                           vertical: 8.h,
+//                         ),
+//                         decoration: BoxDecoration(
+//                           gradient: LinearGradient(
+//                             colors: [
+//                               _getScoreColor(score),
+//                               _getScoreColor(score).withOpacity(0.8),
+//                             ],
+//                           ),
+//                           borderRadius: BorderRadius.circular(16.r),
+//                         ),
+//                         child: Text(
+//                           '$score%',
+//                           style: GoogleFonts.poppins(
+//                             fontSize: 24.sp,
+//                             fontWeight: FontWeight.w800,
+//                             color: Colors.white,
+//                           ),
+//                         ),
+//                       ),
+        
+//                       SizedBox(height: 4.h),
+        
+//                       Text(
+//                         'Latest Result',
+//                         style: GoogleFonts.inter(
+//                           fontSize: 12.sp,
+//                           fontWeight: FontWeight.w500,
+//                           color: AttendanceColors.lightText,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ],
+//               ),
+        
+//               SizedBox(height: 20.h),
+        
+//               InkWell(
+//                 onTap: () => Get.to(() => MonthlyTestResultsScreen()),
+//                 borderRadius: BorderRadius.circular(16.r),
+//                 child: Container(
+//                   padding: EdgeInsets.symmetric(
+//                     vertical: 12.h,
+//                     horizontal: 24.w,
+//                   ),
+//                   decoration: BoxDecoration(
+//                     color: AttendanceColors.primaryOrange.withOpacity(0.1),
+//                     borderRadius: BorderRadius.circular(16.r),
+//                   ),
+//                   child: Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: [
+        
+//                       Text(
+//                         'View All Test Results',
+//                         style: GoogleFonts.poppins(
+//                           fontSize: 14.sp,
+//                           fontWeight: FontWeight.w600,
+//                           color: AttendanceColors.primaryOrange,
+//                         ),
+//                       ),
+        
+//                       SizedBox(width: 8.w),
+        
+//                       Icon(
+//                         LucideIcons.chevronRight,
+//                         color: AttendanceColors.primaryOrange,
+//                         size: 16.sp,
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ).animate(delay: 1100.ms)
+//             .fadeIn()
+//             .slideY(begin: 0.2, end: 0),
+//       ),
+//     );
+//   });
+// }
+
+
+Widget _buildLatestTestCard(context) {
+  return Obx(() {
 
     final item = testResultController.latestResult;
 
-    if (item == null) {
+    if (!testResultController.isLoading.value && item == null) {
       return const Center(
         child: Text('No test results found'),
       );
     }
 
-    final score = item.percentage.round();
+    return Skeletonizer(
+      enabled: testResultController.isLoading.value,
+      child: Container(
+        padding: EdgeInsets.all(20.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 15,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
 
-    return Container(
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-
-              Text(
-                'Latest Test',
-                style: AttendanceTypography.headlineMedium(context),
-              ),
-
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.w,
-                  vertical: 6.h,
+                Text(
+                  'Latest Test',
+                  style: AttendanceTypography.headlineMedium(context),
                 ),
-                decoration: BoxDecoration(
-                  color: AttendanceColors.primaryOrange.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Row(
-                  children: [
 
-                    Icon(
-                      LucideIcons.clock,
-                      size: 14.sp,
-                      color: AttendanceColors.primaryOrange,
-                    ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AttendanceColors.primaryOrange.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Row(
+                    children: [
 
-                    SizedBox(width: 4.w),
-
-                    Text(
-                      _formatDate(item.testDate),
-                      style: GoogleFonts.inter(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
+                      Icon(
+                        LucideIcons.clock,
+                        size: 14.sp,
                         color: AttendanceColors.primaryOrange,
                       ),
-                    ),
-                  ],
+
+                      SizedBox(width: 4.w),
+
+                      Text(
+                        _formatDate(testResultController.latestResult?.testDate ?? DateTime.now()),
+                        style: GoogleFonts.inter(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AttendanceColors.primaryOrange,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
 
-          SizedBox(height: 16.h),
+            SizedBox(height: 16.h),
 
-          Row(
-            children: [
+            Row(
+              children: [
 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      Text(
+                        testResultController.latestResult?.title ?? '',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AttendanceColors.darkText,
+                        ),
+                      ),
+
+                      SizedBox(height: 4.h),
+
+                      Text(
+                        '${testResultController.latestResult?.obtainedMarks ?? 0}/${testResultController.latestResult?.totalMarks ?? 0} Marks',
+                        style: GoogleFonts.inter(
+                          fontSize: 14.sp,
+                          color: AttendanceColors.lightText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
 
-                    Text(
-                      item.title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700,
-                        color: AttendanceColors.darkText,
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            _getScoreColor(
+                              (testResultController.latestResult?.percentage ?? 0).round(),
+                            ),
+                            _getScoreColor(
+                              (testResultController.latestResult?.percentage ?? 0).round(),
+                            ).withOpacity(0.8),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Text(
+                        '${(testResultController.latestResult?.percentage ?? 0).round()}%',
+                        style: GoogleFonts.poppins(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
 
                     SizedBox(height: 4.h),
 
                     Text(
-                      '${item.obtainedMarks}/${item.totalMarks} Marks',
+                      'Latest Result',
                       style: GoogleFonts.inter(
-                        fontSize: 14.sp,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
                         color: AttendanceColors.lightText,
                       ),
                     ),
                   ],
                 ),
-              ),
+              ],
+            ),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
+            SizedBox(height: 20.h),
 
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 8.h,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          _getScoreColor(score),
-                          _getScoreColor(score).withOpacity(0.8),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Text(
-                      '$score%',
+            InkWell(
+              onTap: () => Get.to(() => MonthlyTestResultsScreen()),
+              borderRadius: BorderRadius.circular(16.r),
+
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 12.h,
+                  horizontal: 24.w,
+                ),
+                decoration: BoxDecoration(
+                  color: AttendanceColors.primaryOrange.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    Text(
+                      'View All Test Results',
                       style: GoogleFonts.poppins(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AttendanceColors.primaryOrange,
                       ),
                     ),
-                  ),
 
-                  SizedBox(height: 4.h),
+                    SizedBox(width: 8.w),
 
-                  Text(
-                    'Latest Result',
-                    style: GoogleFonts.inter(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AttendanceColors.lightText,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-
-          SizedBox(height: 20.h),
-
-          InkWell(
-            onTap: () => Get.to(() => MonthlyTestResultsScreen()),
-            borderRadius: BorderRadius.circular(16.r),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 12.h,
-                horizontal: 24.w,
-              ),
-              decoration: BoxDecoration(
-                color: AttendanceColors.primaryOrange.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-
-                  Text(
-                    'View All Test Results',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
+                    Icon(
+                      LucideIcons.chevronRight,
                       color: AttendanceColors.primaryOrange,
+                      size: 16.sp,
                     ),
-                  ),
-
-                  SizedBox(width: 8.w),
-
-                  Icon(
-                    LucideIcons.chevronRight,
-                    color: AttendanceColors.primaryOrange,
-                    size: 16.sp,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    ).animate(delay: 1100.ms)
-        .fadeIn()
-        .slideY(begin: 0.2, end: 0);
+          ],
+        ),
+      ).animate(delay: 1100.ms)
+          .fadeIn()
+          .slideY(begin: 0.2, end: 0),
+    );
   });
 }
 
@@ -977,19 +1185,222 @@ Widget _buildPerformanceTrend(context) {
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
     ];
 
-    return Container(
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            spreadRadius: 2,
-          ),
-        ],
+    return Skeletonizer(
+            enabled: testResultController.isLoading.value,
+
+      child: Container(
+        padding: EdgeInsets.all(20.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 15,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Performance Trend',
+                  style: AttendanceTypography.headlineMedium(context),
+                ),
+                Icon(
+                  LucideIcons.trendingUp,
+                  color: AttendanceColors.primaryOrange,
+                ),
+              ],
+            ),
+      
+            SizedBox(height: 16.h),
+      
+            if (testResultController.isLoading.value)
+              SizedBox(
+                height: 140.h,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            else
+              SizedBox(
+                height: 140.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 12,
+                  itemBuilder: (context, index) {
+                    final month = index + 1;
+      
+                    final isFutureMonth =
+                        DateTime(DateTime.now().year, month, 1).isAfter(
+                      DateTime(now.year, now.month, 1),
+                    );
+      
+                    final score = monthlyScores[month] ?? 0;
+      
+                    final hasData = monthlyScores.containsKey(month);
+      
+                    final isDisabled = isFutureMonth || !hasData;
+      
+                    return Container(
+                      width: 60.w,
+                      margin: EdgeInsets.only(right: 16.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            isDisabled ? '0%' : '${score.toStringAsFixed(0)}%',
+                            style: GoogleFonts.inter(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w500,
+                              color: isDisabled
+                                  ? Colors.grey
+                                  : AttendanceColors.lightText,
+                            ),
+                          ),
+      
+                          SizedBox(height: 8.h),
+      
+                          Container(
+                            height: isDisabled
+                                ? 12.h
+                                : (score / 100 * 80).h,
+                            width: 30.w,
+                            decoration: BoxDecoration(
+                              color: isDisabled
+                                  ? Colors.grey.shade300
+                                  : null,
+                              gradient: isDisabled
+                                  ? null
+                                  : const LinearGradient(
+                                      colors: [
+                                        AttendanceColors.primaryOrange,
+                                        AttendanceColors.secondaryOrange,
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                    ),
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(8.r),
+                              ),
+                            ),
+                          ),
+      
+                          SizedBox(height: 8.h),
+      
+                          Column(
+                            children: [
+                              Text(
+                                months[index],
+                                style: GoogleFonts.inter(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: isDisabled
+                                      ? Colors.grey
+                                      : AttendanceColors.darkText,
+                                ),
+                              ),
+                              Text(
+                                hasData ? 'Avg' : 'No Data',
+                                style: GoogleFonts.inter(
+                                  fontSize: 10.sp,
+                                  color: isDisabled
+                                      ? Colors.grey
+                                      : AttendanceColors.lightText,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ).animate(delay: (index * 40).ms)
+                        .fadeIn(duration: 250.ms)
+                        .scale(
+                          begin: const Offset(0.96, 0.96),
+                          duration: 250.ms,
+                        );
+                  },
+                ),
+              ),
+          ],
+        ),
       ),
+    );
+  });
+}
+
+
+// Widget _buildRecentTests(context) {
+//   return Obx(() {
+//    final recentResults =
+//     testResultController.recentMonthResults;
+
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             Text(
+//               'Recent Tests',
+//               style: AttendanceTypography.headlineMedium(context),
+//             ).animate(delay: 1300.ms).fadeIn(),
+
+//             TextButton(
+//               onPressed: ()
+              
+              
+//                => Get.to(() => 
+               
+//                MonthlyTestResultsScreen()
+               
+               
+//                ),
+//               child: Text(
+//                 'View All',
+//                 style: GoogleFonts.poppins(
+//                   fontSize: 14.sp,
+//                   fontWeight: FontWeight.w600,
+//                   color: AttendanceColors.primaryOrange,
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+
+//         SizedBox(height: 16.h),
+
+//         if (testResultController.isLoading.value)
+//           const Center(child: CircularProgressIndicator()),
+
+//         if (!testResultController.isLoading.value &&
+//             recentResults.isEmpty)
+//           const Text('No test results found'),
+
+//         if (!testResultController.isLoading.value)
+//           ...recentResults.map((item) {
+//             return _buildTestItem(item );
+//           }).toList()
+//               .animate(interval: 100.ms)
+//               .fadeIn()
+//               .slideX(begin: 0.1),
+//       ],
+//     );
+//   });
+// }
+
+Widget _buildRecentTests(context) {
+  return Obx(() {
+    final recentResults =
+        testResultController.recentMonthResults;
+
+    return Skeletonizer(
+      enabled: testResultController.isLoading.value,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -997,190 +1408,45 @@ Widget _buildPerformanceTrend(context) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Performance Trend',
+                'Recent Tests',
                 style: AttendanceTypography.headlineMedium(context),
-              ),
-              Icon(
-                LucideIcons.trendingUp,
-                color: AttendanceColors.primaryOrange,
+              ).animate(delay: 1300.ms).fadeIn(),
+
+              TextButton(
+                onPressed: () => Get.to(
+                  () => MonthlyTestResultsScreen(),
+                ),
+                child: Text(
+                  'View All',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AttendanceColors.primaryOrange,
+                  ),
+                ),
               ),
             ],
           ),
 
           SizedBox(height: 16.h),
 
-          if (testResultController.isLoading.value)
-            SizedBox(
-              height: 140.h,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          else
-            SizedBox(
-              height: 140.h,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 12,
-                itemBuilder: (context, index) {
-                  final month = index + 1;
+          if (!testResultController.isLoading.value &&
+              recentResults.isEmpty)
+            const Text('No test results found'),
 
-                  final isFutureMonth =
-                      DateTime(DateTime.now().year, month, 1).isAfter(
-                    DateTime(now.year, now.month, 1),
-                  );
-
-                  final score = monthlyScores[month] ?? 0;
-
-                  final hasData = monthlyScores.containsKey(month);
-
-                  final isDisabled = isFutureMonth || !hasData;
-
-                  return Container(
-                    width: 60.w,
-                    margin: EdgeInsets.only(right: 16.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          isDisabled ? '0%' : '${score.toStringAsFixed(0)}%',
-                          style: GoogleFonts.inter(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w500,
-                            color: isDisabled
-                                ? Colors.grey
-                                : AttendanceColors.lightText,
-                          ),
-                        ),
-
-                        SizedBox(height: 8.h),
-
-                        Container(
-                          height: isDisabled
-                              ? 12.h
-                              : (score / 100 * 80).h,
-                          width: 30.w,
-                          decoration: BoxDecoration(
-                            color: isDisabled
-                                ? Colors.grey.shade300
-                                : null,
-                            gradient: isDisabled
-                                ? null
-                                : const LinearGradient(
-                                    colors: [
-                                      AttendanceColors.primaryOrange,
-                                      AttendanceColors.secondaryOrange,
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(8.r),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(height: 8.h),
-
-                        Column(
-                          children: [
-                            Text(
-                              months[index],
-                              style: GoogleFonts.inter(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: isDisabled
-                                    ? Colors.grey
-                                    : AttendanceColors.darkText,
-                              ),
-                            ),
-                            Text(
-                              hasData ? 'Avg' : 'No Data',
-                              style: GoogleFonts.inter(
-                                fontSize: 10.sp,
-                                color: isDisabled
-                                    ? Colors.grey
-                                    : AttendanceColors.lightText,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ).animate(delay: (index * 40).ms)
-                      .fadeIn(duration: 250.ms)
-                      .scale(
-                        begin: const Offset(0.96, 0.96),
-                        duration: 250.ms,
-                      );
-                },
-              ),
-            ),
+          if (!testResultController.isLoading.value)
+            ...recentResults.map((item) {
+              return _buildTestItem(item);
+            }).toList()
+                .animate(interval: 100.ms)
+                .fadeIn()
+                .slideX(begin: 0.1),
         ],
       ),
     );
   });
 }
 
-
-Widget _buildRecentTests(context) {
-  return Obx(() {
-   final recentResults =
-    testResultController.recentMonthResults;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Recent Tests',
-              style: AttendanceTypography.headlineMedium(context),
-            ).animate(delay: 1300.ms).fadeIn(),
-
-            TextButton(
-              onPressed: ()
-              
-              
-               => Get.to(() => 
-               
-               MonthlyTestResultsScreen()
-               
-               
-               ),
-              child: Text(
-                'View All',
-                style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AttendanceColors.primaryOrange,
-                ),
-              ),
-            ),
-          ],
-        ),
-
-        SizedBox(height: 16.h),
-
-        if (testResultController.isLoading.value)
-          const Center(child: CircularProgressIndicator()),
-
-        if (!testResultController.isLoading.value &&
-            recentResults.isEmpty)
-          const Text('No test results found'),
-
-        if (!testResultController.isLoading.value)
-          ...recentResults.map((item) {
-            return _buildTestItem(item );
-          }).toList()
-              .animate(interval: 100.ms)
-              .fadeIn()
-              .slideX(begin: 0.1),
-      ],
-    );
-  });
-}
 
   // Widget _buildRecentTests(context) {
   //   return Column(

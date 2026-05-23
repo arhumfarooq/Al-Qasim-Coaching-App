@@ -37,13 +37,13 @@ class VolunteerController extends GetxController {
       volunteers.removeWhere((v) => v.id == id);
     AppToast.success(
   'Volunteer approved successfully',
-  title: 'Success',
+  // title: 'Success',
 );
 
     } catch (e) {
     AppToast.error(
   'Failed to approve volunteer',
-  title: 'Error',
+  // title: 'Error',
 );
 
     } finally {

@@ -98,6 +98,7 @@ class LoginScreen extends StatelessWidget {
 // ),
 
 Obx(() => PrimaryInputField(
+  
   controller: controller.emailController,
   hint: 'Student Email',
   prefixIcon: LucideIcons.user,

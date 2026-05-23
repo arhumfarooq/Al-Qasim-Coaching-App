@@ -18,6 +18,7 @@ import 'package:qr_code_scanner/presentation/views/home_screen.dart';
 
 // Import your YearlyAttendanceScreen
 import 'package:qr_code_scanner/presentation/views/attendance/yearly_attendance_screen.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class MonthlyAttendanceScreen extends StatelessWidget {
   final AttendanceController controller = Get.put(AttendanceController());
@@ -54,11 +55,9 @@ class MonthlyAttendanceScreen extends StatelessWidget {
                         children: [
                         
 Obx(() {
-  if (controller.isLoading.value) {
-    return const CircularProgressIndicator();
-  }
-
-  return MonthSummaryWidget(
+ return Skeletonizer(
+  enabled: controller.isLoading.value,
+  child:   MonthSummaryWidget(
     items: [
       MonthSummaryItem(
         value: controller.presentCount.toString(),
@@ -76,7 +75,11 @@ Obx(() {
         color: AttendanceColors.primaryOrange,
       ),
     ],
-  );
+  ),
+ )
+  ;
+  
+
 }),
                           SizedBox(height: 24.h),
                           
@@ -95,19 +98,31 @@ Obx(() {
 //   startOffset: controller.startOffset,
 //   getDayStatus: controller.getDayStatus,
 // )),
-Obx(() {
-  if (controller.isLoading.value) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+// Obx(() {
+//   if (controller.isLoading.value) {
+//     return const Center(
+//       child: CircularProgressIndicator(),
+//     );
+//   }
 
-  return AttendanceCalendarView(
-    totalDays: controller.totalDays,
-    startOffset: controller.startOffset,
-    getDayStatus: controller.getDayStatus,
+//   return AttendanceCalendarView(
+//     totalDays: controller.totalDays,
+//     startOffset: controller.startOffset,
+//     getDayStatus: controller.getDayStatus,
+//   );
+// }),
+      
+      Obx(() {
+  return Skeletonizer(
+    enabled: controller.isLoading.value,
+    child: AttendanceCalendarView(
+      totalDays: controller.totalDays,
+      startOffset: controller.startOffset,
+      getDayStatus: controller.getDayStatus,
+    ),
   );
 }),
+      
                           SizedBox(height: 32.h),
                           
                           // Legend
@@ -579,12 +594,76 @@ Widget _buildLegendItem({
   );
 }
   Widget _buildDetailedList(BuildContext context) {
-  return Obx(() {
-
+  return 
   
-final markedDays = controller.filteredMarkedDays;
+// Obx(() {
 
-    return Column(
+
+// final markedDays = controller.filteredMarkedDays;
+
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+
+//         Text(
+//           'Detailed Attendance',
+//           style: AttendanceTypography.headlineMedium(context),
+//         ).animate(delay: 800.ms).fadeIn(),
+
+//         SizedBox(height: 16.h),
+
+//         if (controller.isLoading.value)
+//           const Center(
+//             child: CircularProgressIndicator(),
+//           ),
+
+//         if (!controller.isLoading.value &&
+//             markedDays.isEmpty)
+//           const Text(
+//             'No attendance marked yet',
+//           ),
+
+//         if (!controller.isLoading.value)
+//           ...markedDays.map((item) {
+
+//             final statusText =
+//                 controller.getStatusText(item.status);
+
+//             return AttendanceDetailItem(
+//               day: controller.getDayName(item.date),
+
+//               date: controller.getDateText(item.date),
+
+//               time: item.status == 'holiday'
+//                   ? 'Sunday Holiday'
+//                   : 'Attendance Marked',
+
+//               status: statusText,
+
+//             color: AttendanceColors.getAttendanceStatusColor(
+//   item.status,
+// ),
+
+//               icon: _getStatusIcon(statusText),
+//             );
+
+//           }).toList()
+//               .animate(interval: 100.ms)
+//               .fadeIn()
+//               .slideX(begin: 0.1),
+//       ],
+//     );
+//   });
+
+
+Obx(() {
+
+  final markedDays = controller.filteredMarkedDays;
+
+  return Skeletonizer(
+    enabled: controller.isLoading.value,
+
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
@@ -594,11 +673,6 @@ final markedDays = controller.filteredMarkedDays;
         ).animate(delay: 800.ms).fadeIn(),
 
         SizedBox(height: 16.h),
-
-        if (controller.isLoading.value)
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
 
         if (!controller.isLoading.value &&
             markedDays.isEmpty)
@@ -623,9 +697,9 @@ final markedDays = controller.filteredMarkedDays;
 
               status: statusText,
 
-            color: AttendanceColors.getAttendanceStatusColor(
-  item.status,
-),
+              color: AttendanceColors.getAttendanceStatusColor(
+                item.status,
+              ),
 
               icon: _getStatusIcon(statusText),
             );
@@ -635,7 +709,8 @@ final markedDays = controller.filteredMarkedDays;
               .fadeIn()
               .slideX(begin: 0.1),
       ],
-    );
-  });
+    ),
+  );
+});
 }
 }

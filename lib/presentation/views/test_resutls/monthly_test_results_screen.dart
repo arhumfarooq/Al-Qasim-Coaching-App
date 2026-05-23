@@ -10,6 +10,7 @@ import 'package:qr_code_scanner/data/models/datafetch/test_result_model.dart';
 import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/test_result_controller.dart';
 import 'package:qr_code_scanner/presentation/views/test_resutls/test_results_screen.dart';
 import 'package:qr_code_scanner/presentation/views/test_resutls/test_colors.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 
 class MonthlyTestResultsScreen extends StatelessWidget {
@@ -492,11 +493,51 @@ Widget _buildMonthNavigation() {
   );
 }
  Widget _buildTestsList(BuildContext context) {
-  return Obx(() {
-    final monthResults =
-        controller.selectedMonthResults;
+  return 
+  
+  // Obx(() {
+  //   final monthResults =
+  //       controller.selectedMonthResults;
 
-    return Column(
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         'Tests in ${controller.selectedMonthName}',
+  //         style: AttendanceTypography.headlineMedium(context),
+  //       ).animate(delay: 600.ms).fadeIn(),
+
+  //       SizedBox(height: 16.h),
+
+  //       if (controller.isLoading.value)
+  //         const Center(child: CircularProgressIndicator()),
+
+  //       if (!controller.isLoading.value &&
+  //           monthResults.isEmpty)
+  //         const Text(
+  //           'No test has been taken this month',
+  //         ),
+
+  //       if (!controller.isLoading.value)
+  //         ...monthResults.map((item) {
+  //           return _buildTestDetailCard(item);
+  //         }).toList()
+  //             .animate(interval: 100.ms)
+  //             .fadeIn()
+  //             .slideX(begin: 0.1),
+  //     ],
+  //   );
+  // });
+
+
+Obx(() {
+  final monthResults =
+      controller.selectedMonthResults;
+
+  return Skeletonizer(
+    enabled: controller.isLoading.value,
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -506,9 +547,6 @@ Widget _buildMonthNavigation() {
         ).animate(delay: 600.ms).fadeIn(),
 
         SizedBox(height: 16.h),
-
-        if (controller.isLoading.value)
-          const Center(child: CircularProgressIndicator()),
 
         if (!controller.isLoading.value &&
             monthResults.isEmpty)
@@ -524,8 +562,10 @@ Widget _buildMonthNavigation() {
               .fadeIn()
               .slideX(begin: 0.1),
       ],
-    );
-  });
+    ),
+  );
+});
+
 }
   
   // Widget _buildTestDetailCard(int index) {

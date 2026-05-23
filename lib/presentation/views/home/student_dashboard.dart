@@ -20,6 +20,7 @@ import 'package:qr_code_scanner/presentation/views/home/widget/animated_stats_se
 import 'package:qr_code_scanner/presentation/views/home/widget/quick_access_grid.dart';
 import 'package:qr_code_scanner/presentation/views/notifications/notifications_screen.dart';
 import 'package:qr_code_scanner/presentation/views/test_resutls/test_results_screen.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Enhanced Student Dashboard
 class StudentDashboard extends StatelessWidget {
@@ -45,24 +46,24 @@ class StudentDashboard extends StatelessWidget {
 
     return Scaffold(
 
- floatingActionButton: FloatingActionButton.extended(
-    onPressed: () {
-      authController.logout();
-    },
-    backgroundColor: FeeColors.overdueColor,
-    icon: Icon(
-      LucideIcons.logOut,
-      color: Colors.white,
-      size: 20.sp,
-    ),
-    label: Text(
-      'Logout',
-      style: GoogleFonts.poppins(
-        color: Colors.white,
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-  ).animate().scale(delay: 300.ms).fadeIn(),
+//  floatingActionButton: FloatingActionButton.extended(
+//     onPressed: () {
+//       authController.logout();
+//     },
+//     backgroundColor: FeeColors.overdueColor,
+//     icon: Icon(
+//       LucideIcons.logOut,
+//       color: Colors.white,
+//       size: 20.sp,
+//     ),
+//     label: Text(
+//       'Logout',
+//       style: GoogleFonts.poppins(
+//         color: Colors.white,
+//         fontWeight: FontWeight.w600,
+//       ),
+//     ),
+//   ).animate().scale(delay: 300.ms).fadeIn(),
 
 
 
@@ -81,57 +82,53 @@ class StudentDashboard extends StatelessWidget {
 
                   
                   // Header Section with Animation
-                  Obx(() {
-                    final student = studentController.student.value;
+Obx(() {
+  final student = studentController.student.value;
 
-                    if (studentController.isLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+  return Skeletonizer(
+    enabled: studentController.isLoading.value,
 
-                    if (student == null) {
-                      return AnimatedHeaderSection(
-                        greeting: greeting,
-                        userName: 'Student',
-                        classInfo: 'Al-Qasim Academy',
-                        getGreetingIcon: _getGreetingIcon,
-                      );
-                    }
+    child: AnimatedHeaderSection(
+      // onLogout: () => authController.logout(),
+onLogout: (){
+authController.logout();
+},
+      greeting: greeting,
 
-                    return AnimatedHeaderSection(
-                      greeting: greeting,
-                      userName: student.name,
-                      classInfo: 'Class ${student.grade}, Al-Qasim Academy',
-                      getGreetingIcon: _getGreetingIcon,
-                    );
-                  }),
+      userName: studentController.isLoading.value
+          ? 'Class 00'
+          : (student?.name ?? 'Student'),
 
+      classInfo: studentController.isLoading.value
+          ? 'Loading..'
+          : (student != null
+              ? '${student.rollNo}, Al-Qasim Academy'
+              : 'Al-Qasim '),
+
+      getGreetingIcon: _getGreetingIcon, rollNumber: student?.rollNo ?? '',
+    ),
+  );
+}),
              
                   SizedBox(height: 32.h),
             
 
 Obx(() {
-    final attendance = dashboardStatsController.thisWeekAttendanceValue.value;
-  final attendanceChange = dashboardStatsController.attendanceChangeValue.value;
-  if (dashboardStatsController.isLoading.value) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  final attendance =
+      dashboardStatsController.thisWeekAttendanceValue.value;
 
-  return AnimatedStatsSection(
-    title: 'Your Performance',
-    filterLabel: 'This Week',
-    stats: [
-      // StatItem(
-      //   title: 'Attendance',
-      //   value: '${dashboardStatsController.thisWeekAttendance.toStringAsFixed(0)}%',
-      //   change: dashboardStatsController.attendanceChange,
-      //   icon: LucideIcons.calendarCheck,
-      //   color: AttendanceColors.presentColor,
-      //   delay: 600.ms,
-      // ),
+  final attendanceChange =
+      dashboardStatsController.attendanceChangeValue.value;
 
-      StatItem(
+  return Skeletonizer(
+    enabled: dashboardStatsController.isLoading.value,
+
+    child: AnimatedStatsSection(
+      title: 'Your Performance',
+      filterLabel: 'This Week',
+
+      stats: [
+         StatItem(
         title: 'Attendance',
         value: '${attendance.toStringAsFixed(0)}%',
         change: attendanceChange,
@@ -147,28 +144,8 @@ Obx(() {
         color: AttendanceColors.primaryOrange,
         delay: 700.ms,
       ),
-//       StatItem(
-//   title: 'Avg Test Score',
-//   value:
-//       '${dashboardStatsController.thisWeekAvgScoreValue.toStringAsFixed(0)}%',
-//   change: dashboardStatsController.scoreChangeValue,
-//   icon: LucideIcons.clipboardCheck,
-//   color: AttendanceColors.primaryOrange,
-//   delay: 700.ms,
-// ),
 
-// StatItem(
-//   title: 'Avg Test Score',
-//   value:
-//       '${dashboardStatsController.thisWeekAvgScoreValue.toStringAsFixed(0)}%',
-//   change:
-//       dashboardStatsController.scoreChangeValue.value,
-//   icon: LucideIcons.clipboardCheck,
-//   color: AttendanceColors.primaryOrange,
-//   delay: 700.ms,
-// ),
-
-      StatItem(
+        StatItem(
         title: 'Fee Status',
         value: dashboardStatsController.currentFeeStatus,
         change: dashboardStatsController.feeChangeText,
@@ -184,7 +161,80 @@ Obx(() {
   color: AttendanceColors.darkOrange,
   delay: 900.ms,
 ),
+      ],
+    ),
+  );
+}),
+
+
+// Obx(() {
+//     final attendance = dashboardStatsController.thisWeekAttendanceValue.value;
+//   final attendanceChange = dashboardStatsController.attendanceChangeValue.value;
+//   if (dashboardStatsController.isLoading.value) {
+//     return const Center(
+//       child: CircularProgressIndicator(),
+//     );
+//   }
+
+//   return AnimatedStatsSection(
+//     title: 'Your Performance',
+//     filterLabel: 'This Week',
+//     stats: [
+//       // StatItem(
+//       //   title: 'Attendance',
+//       //   value: '${dashboardStatsController.thisWeekAttendance.toStringAsFixed(0)}%',
+//       //   change: dashboardStatsController.attendanceChange,
+//       //   icon: LucideIcons.calendarCheck,
+//       //   color: AttendanceColors.presentColor,
+//       //   delay: 600.ms,
+//       // ),
+
 //       StatItem(
+//         title: 'Attendance',
+//         value: '${attendance.toStringAsFixed(0)}%',
+//         change: attendanceChange,
+//         icon: LucideIcons.calendarCheck,
+//         color: AttendanceColors.presentColor,
+//         delay: 600.ms,
+//       ),
+//       StatItem(
+//         title: 'Avg Test Score',
+//         value: '${dashboardStatsController.thisWeekAvgScore.toStringAsFixed(0)}%',
+//         change: dashboardStatsController.scoreChange,
+//         icon: LucideIcons.clipboardCheck,
+//         color: AttendanceColors.primaryOrange,
+//         delay: 700.ms,
+//       ),
+// //       StatItem(
+// //   title: 'Avg Test Score',
+// //   value:
+// //       '${dashboardStatsController.thisWeekAvgScoreValue.toStringAsFixed(0)}%',
+// //   change: dashboardStatsController.scoreChangeValue,
+// //   icon: LucideIcons.clipboardCheck,
+// //   color: AttendanceColors.primaryOrange,
+// //   delay: 700.ms,
+// // ),
+
+// // StatItem(
+// //   title: 'Avg Test Score',
+// //   value:
+// //       '${dashboardStatsController.thisWeekAvgScoreValue.toStringAsFixed(0)}%',
+// //   change:
+// //       dashboardStatsController.scoreChangeValue.value,
+// //   icon: LucideIcons.clipboardCheck,
+// //   color: AttendanceColors.primaryOrange,
+// //   delay: 700.ms,
+// // ),
+
+//       StatItem(
+//         title: 'Fee Status',
+//         value: dashboardStatsController.currentFeeStatus,
+//         change: dashboardStatsController.feeChangeText,
+//         icon: LucideIcons.wallet,
+//         color: AttendanceColors.holidayColor,
+//         delay: 800.ms,
+//       ),
+//     StatItem(
 //   title: 'Rank',
 //   value: dashboardStatsController.rankChangeTextValue.value,
 //   change: 'This Week',
@@ -192,9 +242,17 @@ Obx(() {
 //   color: AttendanceColors.darkOrange,
 //   delay: 900.ms,
 // ),
-    ],
-  );
-}),
+// //       StatItem(
+// //   title: 'Rank',
+// //   value: dashboardStatsController.rankChangeTextValue.value,
+// //   change: 'This Week',
+// //   icon: LucideIcons.award,
+// //   color: AttendanceColors.darkOrange,
+// //   delay: 900.ms,
+// // ),
+//     ],
+//   );
+// }),
 
                   SizedBox(height: 32.h),
 

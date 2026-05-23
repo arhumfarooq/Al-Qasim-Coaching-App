@@ -567,6 +567,7 @@
 
 
 import 'package:get/get.dart';
+import 'package:qr_code_scanner/core/utils/app_toast.dart';
 import 'package:qr_code_scanner/data/models/datafetch/yearly_month_model.dart';
 import 'package:qr_code_scanner/data/repositories/DataFetchRepo/attendance_repository.dart';
 import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/student_controller.dart';
@@ -684,7 +685,8 @@ class YearlyAttendanceController extends GetxController {
 
       months.assignAll(list);
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      // Get.snackbar('Error', e.toString());
+        AppToast.error(e.toString());
       months.assignAll(_emptyMonths(selectedYear.value));
     } finally {
       if (requestId == _requestId) {

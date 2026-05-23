@@ -11,6 +11,7 @@ import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/atte
 import 'package:qr_code_scanner/presentation/views/attendance/monthly_attendance_screen.dart';
 import 'package:qr_code_scanner/presentation/views/attendance/widget/year_summary_chart.dart';
 import 'package:qr_code_scanner/presentation/views/home_screen.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class YearlyAttendanceScreen extends StatelessWidget {
   final AttendanceController controller = Get.put(AttendanceController());
@@ -67,28 +68,39 @@ class YearlyAttendanceScreen extends StatelessWidget {
 // })
 
 
+// Obx(() {
+//   if (yearlyAttendanceController.isLoading.value) {
+//     return Skeletonizer(
+//       enabled: yearlyAttendanceController.isLoading.value,
+//       child: SizedBox(
+//         height: 220.h,
+//         child: Center(
+//           child: YearSummaryChart(
+//             selectedYear: yearlyAttendanceController.selectedYear.value,
+//             months: yearlyAttendanceController.months.toList(),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   return YearSummaryChart(
+//     selectedYear: yearlyAttendanceController.selectedYear.value,
+//     months: yearlyAttendanceController.months.toList(),
+//   );
+// }),
+
+
 Obx(() {
-  if (yearlyAttendanceController.isLoading.value) {
-    return SizedBox(
-      height: 220.h,
-      child: const Center(
-        child: CircularProgressIndicator(),
+  return Skeletonizer(
+    enabled: yearlyAttendanceController.isLoading.value,
+    child: SizedBox(
+      height: 322.h,
+      child: YearSummaryChart(
+        selectedYear: yearlyAttendanceController.selectedYear.value,
+        months: yearlyAttendanceController.months.toList(),
       ),
-    );
-  }
-
-  if (yearlyAttendanceController.months.isEmpty) {
-    return SizedBox(
-      height: 220.h,
-      child: const Center(
-        child: Text('No yearly attendance found'),
-      ),
-    );
-  }
-
-  return YearSummaryChart(
-    selectedYear: yearlyAttendanceController.selectedYear.value,
-    months: yearlyAttendanceController.months.toList(),
+    ),
   );
 }),
 
@@ -494,181 +506,188 @@ Widget _buildYearSelector() {
 // }
 
 Widget buildMonthlyGrid(BuildContext context) {
-  return Obx(() {
+  return
+   Obx(() {
     // if (controller.isLoading.value)
-    if (yearlyAttendanceController.isLoading.value)
-     {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+    // if (yearlyAttendanceController.isLoading.value)
+    //  {
+    //   return const Center(
+    //     child: CircularProgressIndicator(),
+    //   );
+    // }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Monthly Breakdown',
-          style: AttendanceTypography.headlineMedium(context),
-        ).animate(delay: 400.ms).fadeIn(),
-
-        SizedBox(height: 12.h),
-
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: yearlyAttendanceController.months.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16.h,
-            crossAxisSpacing: 16.w,
-            childAspectRatio: 1.0,
-          ),
-          itemBuilder: (context, index) {
-            final item = yearlyAttendanceController.months[index];
-
-            final percentage = item.percentage;
-            final isDisabled = !item.hasData;
-
-            return InkWell(
-              onTap: isDisabled
-                  ? null
-                  : () {
-                    Get.delete<AttendanceController>();
-                      Get.to(
-                        () => MonthlyAttendanceScreen(),
-                        arguments: {
-                          'year': item.year,
-                          'month': item.month,
-                        },
-                      );
-                    },
-              borderRadius: BorderRadius.circular(16.r),
-              child: Opacity(
-                opacity: isDisabled ? 0.45 : 1,
-                child: Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: isDisabled ? Colors.grey.shade200 : Colors.white,
-                    borderRadius: BorderRadius.circular(16.r),
-                    boxShadow: [
-                      if (!isDisabled)
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(8.w),
-                            decoration: BoxDecoration(
-                              color: isDisabled
-                                  ? Colors.grey.shade300
-                                  : AttendanceColors.primaryOrange
-                                      .withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            child: Text(
-                              item.monthName.substring(0, 3),
-                              style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
+    return 
+    
+    
+    Skeletonizer(
+      enabled: yearlyAttendanceController.isLoading.value,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Monthly Breakdown',
+            style: AttendanceTypography.headlineMedium(context),
+          ).animate(delay: 400.ms).fadeIn(),
+      
+          SizedBox(height: 12.h),
+      
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: yearlyAttendanceController.months.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16.h,
+              crossAxisSpacing: 16.w,
+              childAspectRatio: 1.0,
+            ),
+            itemBuilder: (context, index) {
+              final item = yearlyAttendanceController.months[index];
+      
+              final percentage = item.percentage;
+              final isDisabled = !item.hasData;
+      
+              return InkWell(
+                onTap: isDisabled
+                    ? null
+                    : () {
+                      Get.delete<AttendanceController>();
+                        Get.to(
+                          () => MonthlyAttendanceScreen(),
+                          arguments: {
+                            'year': item.year,
+                            'month': item.month,
+                          },
+                        );
+                      },
+                borderRadius: BorderRadius.circular(16.r),
+                child: Opacity(
+                  opacity: isDisabled ? 0.45 : 1,
+                  child: Container(
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: isDisabled ? Colors.grey.shade200 : Colors.white,
+                      borderRadius: BorderRadius.circular(16.r),
+                      boxShadow: [
+                        if (!isDisabled)
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            spreadRadius: 1,
+                          ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8.w),
+                              decoration: BoxDecoration(
                                 color: isDisabled
-                                    ? Colors.grey
-                                    : AttendanceColors.primaryOrange,
+                                    ? Colors.grey.shade300
+                                    : AttendanceColors.primaryOrange
+                                        .withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
-                            ),
-                          ),
-                          Icon(
-                            LucideIcons.chevronRight,
-                            size: 16.sp,
-                            color: isDisabled ? Colors.grey : Colors.black45,
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 12.h),
-
-                      Text(
-                        item.monthName,
-                        style: GoogleFonts.poppins(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: isDisabled
-                              ? Colors.grey
-                              : AttendanceColors.darkText,
-                        ),
-                      ),
-
-                      SizedBox(height: 8.h),
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: LinearProgressIndicator(
-                                value: isDisabled ? 0 : percentage / 100,
-                                backgroundColor: Colors.grey.shade300,
-                                valueColor: AlwaysStoppedAnimation(
-                                  isDisabled
+                              child: Text(
+                                item.monthName.substring(0, 3),
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: isDisabled
                                       ? Colors.grey
-                                      : _getProgressColor(percentage.round()),
+                                      : AttendanceColors.primaryOrange,
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 12.w),
-                          Text(
-                            isDisabled
-                                ? '--'
-                                : '${percentage.toStringAsFixed(0)}%',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                              color: isDisabled
-                                  ? Colors.grey
-                                  : _getProgressColor(percentage.round()),
+                            Icon(
+                              LucideIcons.chevronRight,
+                              size: 16.sp,
+                              color: isDisabled ? Colors.grey : Colors.black45,
                             ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 8.h),
-
-                      Text(
-                        isDisabled
-                            ? 'No attendance marked'
-                            : '${item.present} Present • ${item.absent} Absent',
-                        style: GoogleFonts.poppins(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AttendanceColors.lightText,
+                          ],
                         ),
-                      ),
-                    ],
+      
+                        SizedBox(height: 12.h),
+      
+                        Text(
+                          item.monthName,
+                          style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: isDisabled
+                                ? Colors.grey
+                                : AttendanceColors.darkText,
+                          ),
+                        ),
+      
+                        SizedBox(height: 8.h),
+      
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10.r),
+                                child: LinearProgressIndicator(
+                                  value: isDisabled ? 0 : percentage / 100,
+                                  backgroundColor: Colors.grey.shade300,
+                                  valueColor: AlwaysStoppedAnimation(
+                                    isDisabled
+                                        ? Colors.grey
+                                        : _getProgressColor(percentage.round()),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Text(
+                              isDisabled
+                                  ? '--'
+                                  : '${percentage.toStringAsFixed(0)}%',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700,
+                                color: isDisabled
+                                    ? Colors.grey
+                                    : _getProgressColor(percentage.round()),
+                              ),
+                            ),
+                          ],
+                        ),
+      
+                        SizedBox(height: 8.h),
+      
+                        Text(
+                          isDisabled
+                              ? 'No attendance marked'
+                              : '${item.present} Present • ${item.absent} Absent',
+                          style: GoogleFonts.poppins(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AttendanceColors.lightText,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
-              // .animate(
-              //   delay: (index * 100 + 600).ms,
-              // ).fadeIn().scale(begin: const Offset(0.9, 0.9)),
-.animate()
-.fadeIn(duration: 300.ms)
-.scale(
-  begin: const Offset(0.96, 0.96),
-  duration: 300.ms,
-)
-            );
-          },
-        ),
-      ],
+                )
+                // .animate(
+                //   delay: (index * 100 + 600).ms,
+                // ).fadeIn().scale(begin: const Offset(0.9, 0.9)),
+      .animate()
+      .fadeIn(duration: 300.ms)
+      .scale(
+        begin: const Offset(0.96, 0.96),
+        duration: 300.ms,
+      )
+              );
+            },
+          ),
+        ],
+      ),
     );
   });
 }

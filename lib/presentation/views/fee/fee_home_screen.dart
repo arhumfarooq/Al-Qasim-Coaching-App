@@ -685,6 +685,7 @@ import 'package:qr_code_scanner/data/models/datafetch/fee_model.dart';
 import 'package:qr_code_scanner/presentation/viewmodels/DataFetchController/fee_controller.dart';
 import 'package:qr_code_scanner/presentation/views/fee/monthly_fee_screen.dart';
 import 'package:qr_code_scanner/presentation/views/fee/yearly_fee_screen.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class FeeHomeScreen extends StatelessWidget {
   FeeHomeScreen({super.key});
@@ -1839,11 +1840,13 @@ Expanded(
 // }
 
 Widget _buildUpcomingPayments(BuildContext context) {
-  return Obx(() {
-    // final items = feeController.unpaidFees.take(5).toList();
-    final items = feeController.pendingAndUpcomingMonths;
+  return 
+  Obx(() {
+  final items = feeController.pendingAndUpcomingMonths;
 
-    return Column(
+  return Skeletonizer(
+    enabled: feeController.isLoading.value,
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _sectionHeader(
@@ -1853,9 +1856,6 @@ Widget _buildUpcomingPayments(BuildContext context) {
         ).animate(delay: 750.ms).fadeIn(),
 
         SizedBox(height: 14.h),
-
-        if (feeController.isLoading.value)
-          const Center(child: CircularProgressIndicator()),
 
         if (!feeController.isLoading.value && items.isEmpty)
           const Text('No upcoming or unpaid records'),
@@ -1868,8 +1868,40 @@ Widget _buildUpcomingPayments(BuildContext context) {
               .fadeIn()
               .slideX(begin: 0.08),
       ],
-    );
-  });
+    ),
+  );
+});
+  // Obx(() {
+  //   // final items = feeController.unpaidFees.take(5).toList();
+  //   final items = feeController.pendingAndUpcomingMonths;
+
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       _sectionHeader(
+  //         title: 'Upcoming Records',
+  //         actionText: 'See All',
+  //         onTap: () => Get.to(() => MonthlyFeeScreen()),
+  //       ).animate(delay: 750.ms).fadeIn(),
+
+  //       SizedBox(height: 14.h),
+
+  //       if (feeController.isLoading.value)
+  //         const Center(child: CircularProgressIndicator()),
+
+  //       if (!feeController.isLoading.value && items.isEmpty)
+  //         const Text('No upcoming or unpaid records'),
+
+  //       if (!feeController.isLoading.value)
+  //         ...items.map((item) {
+  //           return _buildUpcomingItem(item);
+  //         }).toList()
+  //             .animate(interval: 90.ms)
+  //             .fadeIn()
+  //             .slideX(begin: 0.08),
+  //     ],
+  //   );
+  // });
 }
   // Widget _buildUpcomingPayments(BuildContext context) {
   //   return Column(
@@ -2032,13 +2064,56 @@ Widget _buildUpcomingItem(Map<String, dynamic> item) {
   // }
 
   Widget _buildRecentActivity(BuildContext context) {
-  return Obx(() {
+  return 
+  
+  // Obx(() {
 
-    final paidFees = feeController.fees
-        .where((e) => e.status == 'paid')
-        .toList();
+  //   final paidFees = feeController.fees
+  //       .where((e) => e.status == 'paid')
+  //       .toList();
 
-    return Column(
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+
+  //       Text(
+  //         'Recent Activity',
+  //         style: FeeTypography.headlineMedium(context),
+  //       ).animate(delay: 950.ms).fadeIn(),
+
+  //       SizedBox(height: 14.h),
+
+  //       if (feeController.isLoading.value)
+  //         const Center(
+  //           child: CircularProgressIndicator(),
+  //         ),
+
+  //       if (!feeController.isLoading.value &&
+  //           paidFees.isEmpty)
+  //         const Text(
+  //           'No paid activity found',
+  //         ),
+
+  //       if (!feeController.isLoading.value)
+  //         ...paidFees.take(3).map(
+  //           (item) => _buildActivityItem(item),
+  //         ).toList()
+  //             .animate(interval: 90.ms)
+  //             .fadeIn()
+  //             .slideX(begin: 0.08),
+  //     ],
+  //   );
+  // });
+
+  Obx(() {
+
+  final paidFees = feeController.fees
+      .where((e) => e.status == 'paid')
+      .toList();
+
+  return Skeletonizer(
+    enabled: feeController.isLoading.value,
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
@@ -2048,11 +2123,6 @@ Widget _buildUpcomingItem(Map<String, dynamic> item) {
         ).animate(delay: 950.ms).fadeIn(),
 
         SizedBox(height: 14.h),
-
-        if (feeController.isLoading.value)
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
 
         if (!feeController.isLoading.value &&
             paidFees.isEmpty)
@@ -2068,8 +2138,9 @@ Widget _buildUpcomingItem(Map<String, dynamic> item) {
               .fadeIn()
               .slideX(begin: 0.08),
       ],
-    );
-  });
+    ),
+  );
+});
 }
 
   // Widget _buildActivityItem(int index) {
