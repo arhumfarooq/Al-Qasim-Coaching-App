@@ -1,6 +1,3 @@
-
-
-
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/core/utils/app_toast.dart';
 import '../../data/models/volunteer_model.dart';

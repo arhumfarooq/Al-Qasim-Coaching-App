@@ -265,7 +265,8 @@ Future<void> login() async {
 }
   // } catch (e) {
   //   // await clearSession();
-
+          // android:drawable="@drawable/ic_launcher_foreground"
+// 
   //   /// 🔥 FIREBASE / DB ERROR HANDLING
   //   final error = e.toString();
 
